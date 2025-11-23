@@ -1,8 +1,37 @@
 {
+  
+  "name": "promocion",
+  
+  "version": "1.0.0",
+  
+  "description": "",
+  
+  "main": "index.js",
+  
+  "keywords": [],
+  
+  "author": "",
+  
+  "license": "ISC",
+  
   "devDependencies": {
-    "ts-node": "^10.9.2"
+  
+    
+  "ts-node": "^10.9.2"
+  
   },
-   "scripts": {
+  
+  "scripts": {
+  
+    
   "start": "ts-node src/main.ts"
-}
+  
+  },
+  
+  "dependencies": {
+  
+    
+  "uuid": "^13.0.0"
+  
+  }
 }
