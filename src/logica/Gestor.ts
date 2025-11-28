@@ -31,13 +31,15 @@ export class gestor {
         this.items.push(item);
         this.save();
     }
-   /* public actItem(id:string, editTarea: Tarea):void{
-        const index = this.items.findIndex(tarea => tarea.getId() === id);
-        if(index !== -1){
-            this.items[index] = { ...this.items[index], ...editTarea };
-            this.save();
+   public actItem(id:string, editTarea: Tarea):boolean{
+        const index = this.getIndexById(id);
+        if(index == -1){
+            return false; // Tarea no encontrada
         }
-    }*/
+        this.items[index] = editTarea;
+        this.save();
+        return true;
+    }
     public deleteItem(tareaid: string): boolean{
 
         const index = this.getIndexById(tareaid);
