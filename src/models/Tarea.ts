@@ -14,6 +14,7 @@ export class Tarea {
     private fechaCreacion: Date; 
     private fechaVencimiento?: Date;
     private ultimaEdicion?: Date;
+    private eliminada?: boolean;
 
 
     public constructor(titulo: string, descripcion: string, estado: string ,dificultad : string , fechaVencimiento?: Date ){
@@ -25,6 +26,7 @@ export class Tarea {
         this.dificultad = dificultad;
         this.fechaCreacion = new Date();
         this.fechaVencimiento = fechaVencimiento;
+        this.eliminada = false;
     }
 
     // Getters
