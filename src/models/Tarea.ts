@@ -60,6 +60,11 @@ export class Tarea {
     public getUltimaEdicion(): Date | undefined {
         return this.ultimaEdicion;
     }
+    
+    public getEliminado(): boolean {
+        return this.eliminado;
+    }
+  
 
     // Setters
 
@@ -83,10 +88,6 @@ export class Tarea {
         this.ultimaEdicion = new Date();
     }
 
-    public getEliminado(): boolean {
-        return this.eliminado;
-    }
-
     public setEliminado(eliminado: boolean): void {
         this.eliminado = eliminado;
         this.ultimaEdicion = new Date();
@@ -95,4 +96,42 @@ export class Tarea {
     public setElim(){
         this.eliminado = !this.eliminado;
     }
+
+
+    
+    
+    
+    
+    // explicacion https://chatgpt.com/share/692aafab-d70c-8001-ba3b-c56c86831afc
+    public static fromJSON(obj: any): Tarea {
+
+        // Validar campos obligatorios
+        if (!obj.id) throw new Error("Falta 'id' en el JSON.");
+        if (!obj.titulo) throw new Error("Falta 'titulo' en el JSON.");
+        if (!obj.descripcion) throw new Error("Falta 'descripcion' en el JSON.");
+        if (!obj.estado) throw new Error("Falta 'estado' en el JSON.");
+        if (!obj.dificultad) throw new Error("Falta 'dificultad' en el JSON.");
+        if (!obj.fechaCreacion) throw new Error("Falta 'fechaCreacion' en el JSON.");
+        if (obj.eliminado === undefined) throw new Error("Falta 'eliminado' en el JSON.");
+
+        // Crear la tarea con los datos base
+        const tarea = new Tarea(
+            obj.titulo,
+            obj.descripcion,
+            obj.estado,
+            obj.dificultad,
+            obj.fechaVencimiento ? new Date(obj.fechaVencimiento) : undefined
+        );
+
+        // Restaurar atributos que el constructor no recrea
+        tarea.id = obj.id;
+        tarea.fechaCreacion = new Date(obj.fechaCreacion);
+        tarea.ultimaEdicion = obj.ultimaEdicion ? new Date(obj.ultimaEdicion) : undefined;
+        tarea.eliminado = obj.eliminado;
+
+        return tarea;
+    }
+
+
+
 }

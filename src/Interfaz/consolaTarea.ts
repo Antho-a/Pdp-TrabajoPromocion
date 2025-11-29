@@ -17,4 +17,3 @@ function MostrarTareaCompletas(tarea:Tarea): String {
            "Última Edición: " + (tarea.getUltimaEdicion() ? tarea.getUltimaEdicion() : "No editada") + "\n";    
 }
 
-
