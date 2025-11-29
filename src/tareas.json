@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "titulo": "Comprar alimentos",
+    "descripcion": "Comprar frutas, verduras y pan en el supermercado.",
+    "completada": false
+  },
+  {
+    "id": 2,
+    "titulo": "Lavar la ropa",
+    "descripcion": "Lavar y secar la ropa sucia.",
+    "completada": true
+  },
+  {
+    "id": 3,
+    "titulo": "Estudiar para el examen",
+    "descripcion": "Revisar los apuntes y practicar ejercicios para el examen de matemáticas.",
+    "completada": false
+  },
+  {
+    "id": 4,
+    "titulo": "Comprar leche",
+    "descripcion": "tryhardear el caos",
+    "completada": false
+  },
+  {
+    "id": 4,
+    "titulo": "Comprar leche",
+    "descripcion": "tryhardear el caos",
+    "completada": false
+  }
+]
