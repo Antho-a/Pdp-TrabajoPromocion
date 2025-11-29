@@ -1,10 +1,24 @@
 import { Tarea, DIFICULTADES_TAREA, ESTADOS_TAREA } from "../models/Tarea";  
+import { rangoNumero , preguntaYN} from "../funcionalidades-Puras/Comprobaciones";
+
+
+
 import PromptSync from "prompt-sync";
 const prompt = PromptSync();
 
 function CrearTarea(tareas : Tarea[]) : Tarea{
+    console.clear();
+
+    console.log("----------------------------------------------------------------\n");
+    console.log("                  Creación de una nueva tarea \n");
+    console.log("----------------------------------------------------------------\n");
     
+    //variables para el flujo del codigo
     let validacion: boolean = true;
+    let confirmar: string = "";
+    
+    
+    // variables para el objeto tarea
     let titulo :string = "";
     let descripcionInput: string = "";
     let estado: string ;
@@ -12,6 +26,7 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
     let fechaVencimiento: Date | undefined = undefined;
     let fechaCreacion: Date;
 
+    //Titulo ------------------------------------------------------------------------------------------------------------
     do{
 
     validacion = false;
@@ -40,28 +55,29 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
     }
 
     }while(validacion);
+    //---------------------------------------------------------------------------------------------------------------------
+    
     console.clear();
 
-    //Descripcion
+    //Descripcion ------------------------------------------------------------------------------------------------------
+
     do{
         validacion = false;
         descripcionInput = prompt("Ingrese la descripcion de la tarea (max 500 caracteres): ")?.trim() || ""; // elimino los caracters vacios
-        if(descripcionInput.length === 0){ 
-            console.clear();
-            let confirmar = prompt("La descripcion esta vacia, desea dejarla asi ? (y/n): ")?.toLowerCase() || "";
-            while (confirmar !== "y" && confirmar !== "n"){
-                console.clear();
-                confirmar = prompt("Entrada invalida. La descripcion esta vacia, desea dejarla asi ? (y/n): ")?.toLowerCase() || "";
-            }
-            if(confirmar === "y"){
 
-                validacion = false;
+        if(descripcionInput.length === 0){  // Pregunta de si quiere dejar la descripcion vacia
+
+            console.clear();
+            confirmar = preguntaYN(prompt("La descripcion esta vacia, desea dejarla asi ? (y/n): ")?.trim().toLowerCase() || "")
+            while (confirmar === "-1"){
+                console.clear();
+                confirmar = preguntaYN(prompt("La descripcion esta vacia, desea dejarla asi ? (y/n): ")?.trim().toLowerCase() || "")
             }
-            else{
-                validacion = true;
-                continue;
-            }
-        }
+           
+        
+
+
+        } // fin de la pregutna 
 
         if(descripcionInput.length > 500){
             console.clear();
@@ -70,58 +86,75 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
             continue;
         }
     }while(validacion);
+
+    //---------------------------------------------------------------------------------------------------------------------
+
     console.clear();
     
     
     
-    //Estado
+    // Estado -------------------------------------------------------------------
+
     console.log("Ingrese el estado de la tarea");
-
     for(let i : number = 0 ; i<ESTADOS_TAREA.length; i++){
-        console.log(`[${i+1}] ${ESTADOS_TAREA[i]}`);
+        console.log(`[${i+1}] ${ESTADOS_TAREA[i]}\n`);
     }
-
     estado=prompt( "Porfavor ingrese una de las opcines, Precionar ENTER dejara la tarea con el estado en default (pendiente):")?.trim() ||"";
-    if(""=== estado){
+    if(rangoNumero(estado,1,ESTADOS_TAREA.length,true) === "1" ){
         estado="1";
     }
-
-    
-    while( isNaN(parseInt(estado)) && (parseInt(estado) < 1 || parseInt(estado) > ESTADOS_TAREA.length)){
-        console.clear();
-        estado=prompt( "Entrada invalida. Porfavor ingrese una de las opcines, Precionar ENTER dejara la tarea con el estado en default (pendiente):")?.trim() ||"";
-
-        if(""=== estado) {estado="1";}
+    else{
+        while(rangoNumero(estado,1,ESTADOS_TAREA.length,false) === "-1"){
+            estado=prompt( "Entrada invalida. Porfavor ingrese una de las opcines, Precionar ENTER dejara la tarea con el estado en default (pendiente):")?.trim() ||"";
+            if(rangoNumero(estado,1,ESTADOS_TAREA.length,true) === "1" ){
+                estado="1";
+            }
+        }
     }
 
-
-    //Dificultad
-    console.log("Ingrese la dificultad de la tarea");
-    dificultad = prompt( "Porfavor ingrese una de las opcines, Precionar ENTER dejara la tarea con el estado en default ( Baja:⭐ ): ")?.trim() ||"";
-
-    if( "" === dificultad) {dificultad="1"}
-
-    while( isNaN(parseInt(dificultad)) && (parseInt(dificultad) < 1 || parseInt(dificultad) > DIFICULTADES_TAREA.length)){
-
-        console.clear();
-        estado=prompt( "Entrada invalida. Porfavor ingrese una de las opcines, Precionar ENTER dejara la tarea con el estado en default (pendiente):")?.trim() ||"";
-        if(""=== dificultad) { dificultad= "1"; }
-
-    }
+    //----------------------------------------------------------------------------
     console.clear();
 
+    //Dificultad -----------------------------------------------------------------
+    
+    console.log("Ingrese la dificultad de la tarea");
 
-    console.log("Desea ingresar fecha de nacimiento ? ");
-    console.log("[1] Si");
-    console.log("[2] No");
-    let opcionFecha : string = prompt("Ingrese una opcion: ")?.trim() || "";
-
-    while(opcionFecha !== "1" && opcionFecha !== "2"){
-        console.clear();
-        opcionFecha = prompt("Entrada invalida. Ingrese una opcion: ")?.trim() || "";
+    for(let i : number = 0 ; i<DIFICULTADES_TAREA.length; i++){
+        console.log(`[${i+1}] ${DIFICULTADES_TAREA[i]}\n`);
     }
 
+    dificultad = prompt( "Porfavor ingrese una de las opcines, Precionar ENTER dejara la tarea con el estado en default ( Baja:⭐ ): ")?.trim() ||"";
+    if(rangoNumero(dificultad,1,DIFICULTADES_TAREA.length,true) === "1" ){
+    dificultad="1";
+    }
+    else{
+        while(rangoNumero(dificultad,1,DIFICULTADES_TAREA.length,false) === "-1"){ 
+            dificultad = prompt( "Entrada invalida. Porfavor ingrese una de las opcines, Precionar ENTER dejara la tarea con el estado en default ( Baja:⭐ ): ")?.trim() ||"";
+            if(rangoNumero(dificultad,1,DIFICULTADES_TAREA.length,true) === "1" ){
+                dificultad="1";
+            }
+        }
+    }       
+    //----------------------------------------------------------------------------
+
+    console.clear();
+
+    //Fecha de vencimiento -------------------------------------------------------
+    
+    console.log("Desea ingresar fecha de nacimiento ? ");
+
+    console.log("1) - Si");
+    console.log("2) - No");
+
+    let opcionFecha : string = rangoNumero( prompt("Ingrese una opcion: ")?.trim() || "",1,2,false);
+
+    while(opcionFecha === "-1"){
+        opcionFecha = rangoNumero( prompt("Entrada invalida. Ingrese una opcion: ")?.trim() || "",1,2,false); 
+    }
+
+
     if(opcionFecha === "1"){
+
         console.clear();
         
         console.log("Ingrese la fecha de vencimiento:");
@@ -148,8 +181,16 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
 
         fechaVencimiento = new Date(año, mes, dia);
     }
+
+    //----------------------------------------------------------------------------
+    console.clear();
+
+
     fechaCreacion = new Date();
 
     return new Tarea(titulo, descripcionInput, ESTADOS_TAREA[parseInt(estado)-1], DIFICULTADES_TAREA[parseInt(dificultad)-1], fechaVencimiento!);
 
 }
+
+
+export { CrearTarea };

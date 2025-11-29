@@ -1,9 +1,9 @@
 function menu (): String{
 
-return "1. Ver Mis Tareas\n2. Buscar Tarea\n3. Agegar Tarea\n. Salir";}
+return "1) - Ver Mis Tareas\n\n2) - Buscar Tarea\n\n3) - Agegar Tarea\n\n4) - Salir\n\n5) - Eliminar tarea";}
 
 function VerMisTareas():String{
-    return "Qué tarea desea ver?\n1. Todas\n2. Pendientes\n3. En curso\n4. Terminadas\n5. Canceladas\n6. Volver al menú principal";
+    return "Qué tarea desea ver?\n1. Todas\n2. Pendientes\n3. En curso\n4. Terminadas\n6. Volver al menú principal";
 };
 
 function OrdenTareasASC():String{
@@ -21,3 +21,5 @@ function Consultas():String{
 function PreguntaEditar():String {
     return "Qué campo desea editar?\n1. Título\n2. Descripción\n3. Estado\n4. Dificultad\n5. Fecha de vencimiento\n6. Volver al menú principal"
 }
+
+export {menu,VerMisTareas,OrdenTareasASC,Estadisiticas,Consultas,PreguntaEditar};
