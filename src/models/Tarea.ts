@@ -6,7 +6,7 @@ export const DIFICULTADES_TAREA : string[] = ['Baja: ⭐', 'Media: ⭐⭐ ', 'Al
 export class Tarea {
 
 
-    private id : string;
+    private  id : string;
     private titulo: string;
     private descripcion: string;
     private estado: string;
@@ -14,7 +14,6 @@ export class Tarea {
     private fechaCreacion: Date; 
     private fechaVencimiento?: Date;
     private ultimaEdicion?: Date;
-    private eliminada?: boolean;
 
 
     public constructor(titulo: string, descripcion: string, estado: string ,dificultad : string , fechaVencimiento?: Date ){
@@ -26,7 +25,6 @@ export class Tarea {
         this.dificultad = dificultad;
         this.fechaCreacion = new Date();
         this.fechaVencimiento = fechaVencimiento;
-        this.eliminada = false;
     }
 
     // Getters
@@ -85,4 +83,16 @@ export class Tarea {
         this.ultimaEdicion = new Date();
     }
 
+    public getEliminado(): boolean {
+        return this.eliminado;
+    }
+
+    public setEliminado(eliminado: boolean): void {
+        this.eliminado = eliminado;
+        this.ultimaEdicion = new Date();
+    }
+
+    public setElim(){
+        this.eliminado = !this.eliminado;
+    }
 }
