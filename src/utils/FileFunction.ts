@@ -8,7 +8,7 @@ export function readFromFile(filename: string): Tarea[] {
   try {
     if (fs.existsSync(filepath)) {
       const data = fs.readFileSync(filepath, "utf-8");
-      return JSON.parse(data) as Tarea[];
+      return JSON.parse(data);
     }
   } catch (error) {
     console.error(`Error leyendo archivo ${filename}.json:`, error);
