@@ -16,139 +16,61 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
 
     // Variables de flujo
     let validacion: boolean = true;
-    let confirmar: string = "";
+    let confirmar: string;
     
     // Variables de la tarea
-    let titulo :string = "";
-    let descripcionInput: string = "";
+    let titulo :string;
+    let descripcion: string;
     let estado: string ;
     let dificultad: string;
-    let fechaVencimiento: Date | undefined = undefined;
+    let fechaVencimiento: Date | undefined;
     let fechaCreacion: Date;
 
     // --- 1. TÍTULO ---
-    do{
-        validacion = false;
-        header("Paso 1/4: Título");
+    header("Paso 1/4: Título");
+    titulo = prompt("Ingrese el título de la tarea (max 100 caracteres): ")?.trim() ||"";
+    while(titulo.length == 0 || titulo.length > 100 || tareas.some(tarea => tarea.getTitulo().toLowerCase() === titulo.toLowerCase())){
+        console.log("\n [!] Título inválido. Intente nuevamente.")
+        titulo = prompt("Ingrese el título de la tarea (max 100 caracteres): ")?.trim() ||"";
+    }
 
-        console.log("Ingrese el título de la tarea (max 100 caracteres):");
-        titulo = prompt(" > ")?.trim()||""; 
-        
-        if(titulo.length=== 0){
-            console.log("\n [!] El título no puede estar vacío.");
-            prompt(" Presione Enter para reintentar...");
-            validacion = true;
-            continue;
-        }
+    header("Paso 2/4: Descripción");
+    descripcion = prompt("Ingrese la descripción (Opcional, max 500 caracteres): ")?.trim() ||"";
+    while(descripcion.length > 500){
+        console.log("\n [!] Descripción inválida. Intente nuevamente.")
+        descripcion = prompt("Ingrese la descripción (max 500 caracteres): ")?.trim() ||"";
+    }
 
-        if(titulo.length > 100){
-            console.log("\n [!] El título supera los 100 caracteres.");
-            prompt(" Presione Enter para reintentar...");
-            validacion = true;
-            continue;
-        }
-
-        for (let i : number = 0; i<tareas.length ; i++){
-            if (titulo.toLowerCase() == tareas[i].getTitulo().toLowerCase()){
-                console.log("\n [!] Ya existe una tarea con ese título.");
-                prompt(" Presione Enter para reintentar...");
-                validacion=true;
-            }
-        }
-    }while(validacion);
-    
-    // --- 2. DESCRIPCIÓN ---
-    do{
-        validacion = false;
-        header("Paso 2/4: Descripción");
-
-        console.log("Ingrese la descripción (max 500 caracteres):");
-        descripcionInput = prompt(" > ")?.trim() || ""; 
-
-        if(descripcionInput.length === 0){  
-            console.log("\n [i] La descripción está vacía.");
-            confirmar = preguntaYN(prompt("     ¿Desea dejarla así? (y/n): ")?.trim().toLowerCase() || "")
-
-            while (confirmar === "-1"){
-                confirmar = preguntaYN(prompt("     Opción inválida. ¿Desea dejarla así? (y/n): ")?.trim().toLowerCase() || "")
-            }
-            
-            if(confirmar == "0") {validacion = true}
-        } 
-
-        if(descripcionInput.length > 500){
-            console.log("\n [!] La descripción supera los 500 caracteres.");
-            prompt(" Presione Enter para reintentar...");
-            validacion = true;
-            continue;
-        }
-    }while(validacion);
-
-    // --- 3. ESTADO ---
     header("Paso 3/4: Estado");
-
-    console.log("Seleccione el estado actual:\n");
-    for(let i : number = 0 ; i<ESTADOS_TAREA.length; i++){
-        console.log(`   [${i+1}] ${ESTADOS_TAREA[i]}`);
+    estado=prompt("Seleccione el estado actual(pendiente, en curso, terminada): ")?.trim() ||"";
+    while(estado!="" && !ESTADOS_TAREA.includes(estado)){
+        console.log("\n [!] Estado inválido. Intente nuevamente.")
+        estado=prompt("Seleccione el estado actual(pendiente, en curso, terminada): ")?.trim() ||"";
     }
-    console.log("\n (Enter para default: Pendiente)");
-    
-    estado = prompt(" > ")?.trim() ||"";
-
-    // Lógica original de Estado
-
-    if(rangoNumero(estado,1,ESTADOS_TAREA.length,true) === "1" ){
+    if(estado==""){
+        console.log("\n [i] Estado por defecto: Pendiente.");
         estado="1";
+        
     }
 
-    else{
-        while(rangoNumero(estado,1,ESTADOS_TAREA.length,false) === "-1"){
-            console.log(" [!] Entrada inválida.");
-            
-            estado = prompt(" > ")?.trim() ||"";
-
-
-
-            if(rangoNumero(estado,1,ESTADOS_TAREA.length,true) === "1" ){
-                estado="1";
-            }
-        }
-    }
-
-    // --- 4. DIFICULTAD ---
     header("Paso 4/4: Dificultad");
-
-    console.log("Seleccione la dificultad:\n");
-    for(let i : number = 0 ; i<DIFICULTADES_TAREA.length; i++){
-        console.log(`   [${i+1}] ${DIFICULTADES_TAREA[i]}`);
+    dificultad=prompt("Seleccione la dificultad(baja, media, alta): ")?.trim() ||"";
+    while(dificultad!="" && !DIFICULTADES_TAREA.includes(dificultad)){
+        console.log("\n [!] Dificultad inválida. Intente nuevamente.")
+        dificultad=prompt("Seleccione la dificultad(baja, media, alta): ")?.trim() ||"";
     }
-    console.log("\n (Enter para default: Baja ⭐)");
-
-    dificultad = prompt(" > ")?.trim() ||"";
-    
-    // COPIADA LA LÓGICA EXACTA DE ESTADO (Cambiando variables y array)
-    // El 'true' permite vacío y asumo que tu función rangoNumero devuelve "1" en ese caso
-    if(rangoNumero(dificultad, 1, DIFICULTADES_TAREA.length, true) === "1" ){
+    if(dificultad==""){
+        console.log("\n [i] Dificultad por defecto: Baja.");
         dificultad="1";
     }
-    else{
-        while(rangoNumero(dificultad, 1, DIFICULTADES_TAREA.length, false) === "-1"){ 
-            console.log(" [!] Entrada inválida.");
-            dificultad = prompt(" > ")?.trim() ||"";
-            if(rangoNumero(dificultad, 1, DIFICULTADES_TAREA.length, true) === "1" ){
-                dificultad="1";
-            }
-        }
-    }
-        
-    // --- 5. FECHA DE VENCIMIENTO ---
+
     header("Configuración final");
     
     console.log("¿Desea asignar una fecha de vencimiento?");
     console.log("   [1] Sí");
     console.log("   [2] No");
 
-    let opcionFecha : string = rangoNumero( prompt(" > ")?.trim() || "",1,2,false);
+   let opcionFecha : string = rangoNumero( prompt(" > ")?.trim() || "",1,2,false);
 
     while(opcionFecha === "-1"){
         opcionFecha = rangoNumero( prompt(" [!] Entrada inválida. Intente de nuevo: ")?.trim() || "",1,2,false); 
@@ -175,18 +97,16 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
             dia = parseInt(prompt(" Día (1-31): ")?.trim() || "");
         }
 
-        fechaVencimiento = new Date(año, mes-1, dia);
+        fechaVencimiento = new Date(año, mes, dia);
+    }else{
+        fechaVencimiento = undefined;
     }
-
+    
     console.clear();
     console.log("\n========================================");
     console.log("      ¡TAREA CREADA CON ÉXITO!");
     console.log("========================================\n");
-
-    fechaCreacion = new Date();
-
-    // Ahora 'dificultad' nunca será NaN porque el IF de arriba asegura que sea "1" si es vacío
-    return new Tarea(titulo, descripcionInput, ESTADOS_TAREA[parseInt(estado)-1], DIFICULTADES_TAREA[parseInt(dificultad)-1], fechaVencimiento!);
+    return new Tarea(titulo, descripcion, ESTADOS_TAREA[parseInt(estado)-1], DIFICULTADES_TAREA[parseInt(dificultad)-1], fechaVencimiento);
 }
 
 export { CrearTarea };

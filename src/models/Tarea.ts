@@ -22,10 +22,10 @@ export class Tarea {
         this.id = uuid();
         this.titulo = titulo;
         this.descripcion = descripcion;
-        this.estado = estado;
-        this.dificultad = dificultad;
+        this.estado = estado || ESTADOS_TAREA[0];
+        this.dificultad = dificultad || DIFICULTADES_TAREA[0];
         this.fechaCreacion = new Date();
-        this.fechaVencimiento = fechaVencimiento;
+        this.fechaVencimiento = fechaVencimiento || undefined;
         this.eliminado = false;
     }
 
@@ -91,16 +91,14 @@ export class Tarea {
         this.ultimaEdicion = new Date();
     }
 
-    public setEliminado(eliminado: boolean): void {
-        this.eliminado = eliminado;
+    public setElimado(){
+        this.eliminado = !this.eliminado;
         this.ultimaEdicion = new Date();
     }
-
-    public setElim(){
-        this.eliminado = !this.eliminado;
-    }
-
     
+    public toString(): string {
+        return `Tarea \nID=${this.id}\n Título=${this.titulo}\n Descripción=${this.descripcion}\n Estado=${this.estado}\n Dificultad=${this.dificultad}\n Fecha de Creación=${this.fechaCreacion.toLocaleString()}\n Fecha de Vencimiento=${this.fechaVencimiento ? this.fechaVencimiento.toLocaleString() : 'No establecida'}\n Última Edición=${this.ultimaEdicion ? this.ultimaEdicion.toLocaleString() : 'No editada'}\n Eliminado=${this.eliminado}]`;
+    }
     // explicacion https://chatgpt.com/share/692aafab-d70c-8001-ba3b-c56c86831afc
     public static fromJSON(obj: any | Tarea ): Tarea {
 

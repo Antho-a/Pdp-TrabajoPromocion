@@ -48,7 +48,7 @@ export class gestor {
         if(index === -1){
             return false; // Tarea no encontrada
         }
-        this.items[index].setElim();
+        this.items[index].setElimado();
         this.save();
         return true;
     }

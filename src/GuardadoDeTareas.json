@@ -6,7 +6,8 @@
     "estado": "Pendiente",
     "dificultad": "Baja: ⭐",
     "fechaCreacion": "2025-11-30T09:49:47.669Z",
-    "eliminado": false
+    "eliminado": true,
+    "ultimaEdicion": "2025-11-30T22:08:16.745Z"
   },
   {
     "id": "5b990bef-f4ac-46c0-82cb-e45b55b55d99",
@@ -24,7 +25,6 @@
     "estado": "Pendiente",
     "dificultad": "Baja: ⭐",
     "fechaCreacion": "2025-11-30T13:41:45.079Z",
-    "fechaVencimiento": null,
     "eliminado": false
   },
   {
@@ -35,5 +35,24 @@
     "dificultad": "Baja: ⭐",
     "fechaCreacion": "2025-11-30T13:44:08.142Z",
     "eliminado": false
+  },
+  {
+    "id": "3e1574d9-e296-4e6e-b261-bfec63a640fc",
+    "titulo": "avion",
+    "descripcion": "hola",
+    "estado": "Pendiente",
+    "dificultad": "Baja: ⭐",
+    "fechaCreacion": "2025-11-30T22:07:17.335Z",
+    "eliminado": false
+  },
+  {
+    "id": "d864dfc5-38a9-460c-9ae8-ad8eb1977839",
+    "titulo": "fran",
+    "descripcion": "fran",
+    "estado": "Pendiente",
+    "dificultad": "Baja: ⭐",
+    "fechaCreacion": "2025-11-30T22:36:43.865Z",
+    "eliminado": true,
+    "ultimaEdicion": "2025-11-30T22:37:16.396Z"
   }
 ]
