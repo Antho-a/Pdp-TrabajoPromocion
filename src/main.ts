@@ -1,68 +1,66 @@
 import PromptSync from "prompt-sync";
 const prompt = PromptSync();
-import { ESTADOS_TAREA } from "./models/Tarea";
 import { gestor } from "./logica/Gestor";
-import { Tarea } from "./models/Tarea";
-import {menu} from "./Interfaz/Consola";
+import { menu } from "./Interfaz/Consola"; 
+import { vertarea } from "./Funcionalidades/VerMisTareas";
 import { CrearTarea } from "./Funcionalidades/CrearTarea";
-import { contarPorEstado, contarPorDificultad } from "./funcionalidades-Puras/Estadistica";
-function main():void{
-    console.clear();
 
-    const gestorTareas = new gestor("TareasGuardadas.json"); // creador de gestor de tareas
+function main(): void {
+    const gestorTareas = new gestor("GuardadoDeTareas");
+    let opcionesMenu: number;
 
-    // variables utilizadas para la seleccion del menu
-  
-    
-     let opcionesMenu :number;
+    // Helper simple para pausar
+    const pausar = () => prompt("\n Presione Enter para continuar...");
 
-    //---------------------------------------------------------------------------
-    
-    
-    do{ //clico para el menu principal
-        
-        console.log(menu());
-         
-        // proceso de seleccion del menu
+    do {
+        console.clear();
+        console.log(menu()); 
 
-            opcionesMenu = parseInt(prompt("Seleccione una opción del menú: "));
+        // Input simple con flecha
+        let input = prompt(" > ");
+        opcionesMenu = parseInt(input);
 
-            while( !isNaN(opcionesMenu) && (opcionesMenu < 1 || opcionesMenu > 4)){
-                console.clear();
-                console.log(menu());
-                opcionesMenu = parseInt(prompt("Entrada invalida. Seleccione una opción del menú: "));
-            }
-
-        //fin proceso de seleccion del menu
+        while (isNaN(opcionesMenu) || opcionesMenu < 1 || opcionesMenu > 5) {
+            console.log("\n [!] Opción inválida. Seleccione entre 1 y 5.");
+            input = prompt(" > ");
+            opcionesMenu = parseInt(input);
+        }
 
         console.clear();
 
-
-        
-        switch(opcionesMenu){
+        switch (opcionesMenu) {
             case 1:
-                console.log("Ver Mis Tareas");
-            break;
+                
+                vertarea(gestorTareas);
+                // gestorTareas.mostrarTareas(); 
+                break;
 
             case 2:
-                console.log("Buscar Tarea");
-
-            break;
+                console.log("\n=== BUSCAR TAREA ===\n");
+                console.log("Buscador...");
+                pausar();
+                break;
 
             case 3:
-                gestorTareas.addItem( CrearTarea(gestorTareas.getItems()) );
-                console.log("Tarea agregada con exito.");
-
-            break;
-
-            case 4:
+                // CrearTarea ya maneja su propia limpieza de pantalla
+                gestorTareas.addItem(CrearTarea(gestorTareas.getItems()));
                 
-                console.log("Eliminar tarea");
+                console.log("\n [OK] Tarea guardada en el sistema.");
+                pausar();
+                break;
             
-            break;
+            case 4:
+                console.log("\n=== ELIMINAR TAREA ===\n");
+                // Lógica de eliminar
+                pausar();
+                break;
+
+            case 5:
+                console.log("\nCerrando aplicación... ¡Hasta luego!\n");
+                break;
         }
 
-    }while(opcionesMenu !== 4);
+    } while (opcionesMenu !== 5);
 }
 
 main();

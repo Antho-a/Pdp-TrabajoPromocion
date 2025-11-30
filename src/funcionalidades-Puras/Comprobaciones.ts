@@ -8,10 +8,8 @@ function rangoNumero(value: string, min: number, max: number, vacio: boolean ): 
         return "-1";
     }
 
-    return value;
-    
+    return value;   
 }
-
 
 function preguntaYN(value: string): string {
 
@@ -23,6 +21,9 @@ function preguntaYN(value: string): string {
 
     return "-1";
 }
+
+
+
 
 
 export { rangoNumero , preguntaYN };
