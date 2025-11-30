@@ -1,25 +1,85 @@
-function menu (): String{
+import { Tarea } from "../models/Tarea";
 
-return "1) - Ver Mis Tareas\n\n2) - Buscar Tarea\n\n3) - Agegar Tarea\n\n4) - Salir\n\n5) - Eliminar tarea";}
-
-function VerMisTareas():String{
-    return "Qué tarea desea ver?\n1. Todas\n2. Pendientes\n3. En curso\n4. Terminadas\n6. Volver al menú principal";
-};
-
-function OrdenTareasASC():String{
-    return "Cómo desea ordenar las tareas?\n1. Titilo ascendente \n2. Por fecha de vencimiento ascendete \n3. Por fecha de creación ascendente\n4. Dificultad (de baja a alta) \n5. Volver al menú principal";
+function menu(): string {
+    return "\n" +
+    "========================================\n" +
+    "            MENÚ PRINCIPAL              \n" +
+    "========================================\n" +
+    "   [1] - Ver Mis Tareas\n" +
+    "   [2] - Buscar Tarea\n" +
+    "   [3] - Agregar Tarea\n" +
+    "   [4] - Eliminar Tarea\n" +
+    "   [5] - Salir\n" +
+    "========================================";
 }
 
-function Estadisiticas():String{
-    return "Qué estadística desea ver?\n1. Total de tareas\n2. Porcentaje de tareas por estado\n3. Porcentaje de tareas por dificultad\n4. Volver al menú principal"
-};
-
-function Consultas():String{
-    return "Elija la forma del listado de consultas\n1. Tareas de alta prioridad\n2. Tareas relacionadas\n3. Listado de las tareas vencidas\n4. Volver al menú principal"
-};
-
-function PreguntaEditar():String {
-    return "Qué campo desea editar?\n1. Título\n2. Descripción\n3. Estado\n4. Dificultad\n5. Fecha de vencimiento\n6. Volver al menú principal"
+function VerMisTareas(): string {
+    return "\n" +
+    "--- FILTRAR TAREAS ---\n" +
+    "\n" +
+    "   [1] Todas\n" +
+    "   [2] Pendientes\n" +
+    "   [3] En curso\n" +
+    "   [4] Terminadas\n" +
+    "   [6] Volver al menú principal\n";
 }
 
-export {menu,VerMisTareas,OrdenTareasASC,Estadisiticas,Consultas,PreguntaEditar};
+function OrdenTareasASC(): string {
+    return "\n" +
+    "--- ORDENAR POR ---\n" +
+    "\n" +
+    "   [1] Título ascendente\n" +
+    "   [2] Fecha de vencimiento ascendente\n" +
+    "   [3] Fecha de creación ascendente\n" +
+    "   [4] Dificultad (de baja a alta)\n" +
+    "   [5] Volver al menú principal\n";
+}
+
+function Estadisiticas(): string {
+    return "\n" +
+    "--- ESTADÍSTICAS ---\n" +
+    "\n" +
+    "   [1] Total de tareas\n" +
+    "   [2] Porcentaje de tareas por estado\n" +
+    "   [3] Porcentaje de tareas por dificultad\n" +
+    "   [4] Volver al menú principal\n";
+}
+
+function Consultas(): string {
+    return "\n" +
+    "--- CONSULTAS AVANZADAS ---\n" +
+    "\n" +
+    "   [1] Tareas de alta prioridad\n" +
+    "   [2] Tareas relacionadas\n" +
+    "   [3] Listado de tareas vencidas\n" +
+    "   [4] Volver al menú principal\n";
+}
+
+function PreguntaEditar(): string {
+    return "\n" +
+    "--- EDITAR CAMPO ---\n" +
+    "\n" +
+    "   [1] Título\n" +
+    "   [2] Descripción\n" +
+    "   [3] Estado\n" +
+    "   [4] Dificultad\n" +
+    "   [5] Fecha de vencimiento\n" +
+    "   [6] Volver al menú principal\n";
+}
+
+function EditarY_N (): string{
+    return "- Desea editar la tarea? (Y/N)\n"
+}
+
+
+
+
+export { 
+    menu, 
+    VerMisTareas, 
+    OrdenTareasASC, 
+    Estadisiticas, 
+    Consultas, 
+    PreguntaEditar,
+    EditarY_N
+};

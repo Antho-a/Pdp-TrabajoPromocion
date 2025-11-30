@@ -69,6 +69,7 @@ export class Tarea {
   
 
     // Setters
+    
 
     public setDescripcion(descripcion: string): void {
         this.descripcion = descripcion;
@@ -99,21 +100,17 @@ export class Tarea {
         this.eliminado = !this.eliminado;
     }
 
-
-    
-    
-    
     
     // explicacion https://chatgpt.com/share/692aafab-d70c-8001-ba3b-c56c86831afc
-    public static fromJSON(obj: any): Tarea {
+    public static fromJSON(obj: any | Tarea ): Tarea {
 
         // Validar campos obligatorios
-        if (!obj.id) throw new Error("Falta 'id' en el JSON.");
-        if (!obj.titulo) throw new Error("Falta 'titulo' en el JSON.");
-        if (!obj.descripcion) throw new Error("Falta 'descripcion' en el JSON.");
-        if (!obj.estado) throw new Error("Falta 'estado' en el JSON.");
-        if (!obj.dificultad) throw new Error("Falta 'dificultad' en el JSON.");
-        if (!obj.fechaCreacion) throw new Error("Falta 'fechaCreacion' en el JSON.");
+        if (obj.id === undefined ) throw new Error("Falta 'id' en el JSON.");
+        if (obj.titulo === undefined) throw new Error("Falta 'titulo' en el JSON.");
+        if (obj.descripcion === undefined) throw new Error("Falta 'descripcion' en el JSON.");
+        if (obj.estado === undefined) throw new Error("Falta 'estado' en el JSON.");
+        if (obj.dificultad === undefined) throw new Error("Falta 'dificultad' en el JSON.");
+        if (obj.fechaCreacion === undefined) throw new Error("Falta 'fechaCreacion' en el JSON.");
         if (obj.eliminado === undefined) throw new Error("Falta 'eliminado' en el JSON.");
 
         // Crear la tarea con los datos base

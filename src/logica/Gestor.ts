@@ -9,11 +9,9 @@ export class gestor {
     private name: string;
     private items: Tarea[]= [];
 
-
     constructor(name: string){
         this.name = name;
         this.load();
-        
     }
 
     // esto cambio ya que las tareas se cargan pero de manera obj que es totalmente diferente a la clase tarea 
@@ -63,6 +61,7 @@ export class gestor {
     public getItems(): Tarea[] {
         return this.items;
     }   
+
 
 
 
