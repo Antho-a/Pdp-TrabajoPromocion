@@ -2,7 +2,6 @@ import { readFromFile,writeToFile } from "../utils/FileFunction";
 import { Tarea } from "../models/Tarea";
 
 
-
 export class gestor {
 
 
@@ -63,8 +62,6 @@ export class gestor {
     public getItems(): Tarea[] {
         return this.items;
     }   
-
-
 
 
 }
