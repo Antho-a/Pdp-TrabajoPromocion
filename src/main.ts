@@ -1,11 +1,11 @@
 import PromptSync from "prompt-sync";
 const prompt = PromptSync();
-
+import { ESTADOS_TAREA } from "./models/Tarea";
 import { gestor } from "./logica/Gestor";
 import { Tarea } from "./models/Tarea";
 import {menu} from "./Interfaz/Consola";
 import { CrearTarea } from "./Funcionalidades/CrearTarea";
-
+import { contarPorEstado, contarPorDificultad } from "./funcionalidades-Puras/Estadistica";
 function main():void{
     console.clear();
 
@@ -56,6 +56,7 @@ function main():void{
             break;
 
             case 4:
+                
                 console.log("Eliminar tarea");
             
             break;

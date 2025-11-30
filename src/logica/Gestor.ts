@@ -1,6 +1,6 @@
 import { readFromFile,writeToFile } from "../utils/FileFunction";
 import { Tarea } from "../models/Tarea";
-
+import { contarPorDificultad } from "../funcionalidades-Puras/Estadistica";
 
 
 export class gestor {

@@ -6,21 +6,10 @@ function filtrarTodas(tareas : Tarea[]): Tarea[] {
     return tareas.filter(tarea => tarea.getEliminado() === false);
 }
 
-function filterPendientes(tareas : Tarea[]) : Tarea[]{
-    return tareas.filter(tarea => tarea.getEliminado() === false && tarea.getEstado() === ESTADOS_TAREA[0]);
-}
-
-function filterCurso(tareas : Tarea[]) : Tarea[]{
-    return tareas.filter(tarea => tarea.getEliminado() === false && tarea.getEstado() === ESTADOS_TAREA[1]);
-}
-
-function filterterminadas(tareas : Tarea[]) : Tarea[]{
-    return tareas.filter(tarea => tarea.getEliminado() === false && tarea.getEstado() === ESTADOS_TAREA[2]);
-}
-
-function filtercanceladas(tareas : Tarea[]) : Tarea[]{
-    return tareas.filter(tarea => tarea.getEliminado() === false && tarea.getEstado() === ESTADOS_TAREA[3]);
+function filter(tareas : Tarea[], estado:string) : Tarea[]{
+    return tareas.filter(tarea => tarea.getEliminado() === false && tarea.getEstado() === estado);
 }
 
 
-export{ filterCurso, filterPendientes , filtercanceladas , filterterminadas , filtrarTodas}
+
+export{ filter , filtrarTodas}
