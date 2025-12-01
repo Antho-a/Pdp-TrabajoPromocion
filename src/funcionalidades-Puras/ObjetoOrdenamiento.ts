@@ -1,65 +1,108 @@
-import { DIFICULTADES_TAREA, Tarea } from "../models/Tarea";
+import {Tarea } from "../models/Tarea";
 
+/**
+ * Clase encargada de proporcionar distintos mecanismos de ordenamiento para listas de Tareas.
+ * Utiliza un enfoque funcional donde se pasa una función comparadora genérica.
+ */
 export class OrdenadorTareas {
 
-    // la funcion padre, el todo del todo 
+    // =========================================================
+    // MÉTODOS PRIVADOS (Lógica interna de comparación)
+    // =========================================================
+
+    /**
+     * Función "padre" o genérica que ejecuta el ordenamiento.
+     * Crea una copia del arreglo original para no mutarlo directamente.
+     * @param items - Lista de tareas a ordenar.
+     * @param comparador - Función que define la lógica de orden (a vs b).
+     * @returns Un nuevo arreglo de tareas ordenado.
+     */
     private ordenarLista(items: Tarea[], comparador: (a: Tarea, b: Tarea) => number): Tarea[] {
+        // Spread operator [...] para romper la referencia y retornar un nuevo array
         return [...items].sort(comparador);
     }
 
-
-    // metodos internos para pasarle a ordenar lista segun algun parametro, esto se para para que la funcion padre funcione 
-
-
+    /**
+     * Comparador alfabético para títulos.
+     * Utiliza localeCompare para manejar correctamente acentos y caracteres especiales.
+     */
     private compararPorTitulo(a: Tarea, b: Tarea): number {
         return a.getTitulo().localeCompare(b.getTitulo());
     }
 
+    /**
+     * Comparador cronológico para fechas de vencimiento.
+     * Maneja el caso de fechas indefinidas (tareas sin vencimiento van al final).
+     */
     private compararPorFechaVencimiento(a: Tarea, b: Tarea): number {
         const fechaA = a.getFechaVencimiento();
         const fechaB = b.getFechaVencimiento();
+        
+        // Si A no tiene fecha, es "mayor" (va después)
         if (!fechaA) return 1;
+        // Si B no tiene fecha, A es "menor" (va antes)
         if (!fechaB) return -1;
+        
+        // Resta de timestamps: negativo si A es antes que B, positivo si después
         return new Date(fechaA).getTime() - new Date(fechaB).getTime();
     }
 
+    /**
+     * Comparador cronológico para fecha de creación.
+     */
     private compararPorFechaCreacion(a: Tarea, b: Tarea): number {
         const tiempoA = new Date(a.getFechaCreacion());
         const tiempoB = new Date(b.getFechaCreacion());
         return tiempoA.getTime() - tiempoB.getTime();
     }
 
-    // Método 100% Puro: Recibe el orden explícitamente
+    /**
+     * Comparador basado en un orden de dificultad personalizado.
+     * @param orden - Arreglo de strings que define la jerarquía (ej: ['Baja', 'Media', 'Alta']).
+     */
+    // Método 100% Puro: Recibe el orden explícitamente para evitar dependencias externas duras
     private compararPorDificultad(a: Tarea, b: Tarea, orden: string[]): number {
+        // Busca el índice de la dificultad en el arreglo de referencia
         const indexA = orden.indexOf(a.getDificultad().toLowerCase());
         const indexB = orden.indexOf(b.getDificultad().toLowerCase());
+        
+        // Ordena de menor índice (ej: Baja=0) a mayor índice (ej: Alta=2)
         return indexA - indexB;
     }
 
     // =========================================================
-    // MÉTODOS PÚBLICOS
+    // MÉTODOS PÚBLICOS (API expuesta)
     // =========================================================
 
+    /**
+     * Ordena las tareas alfabéticamente por título.
+     */
     public porTitulo(tareas: Tarea[]): Tarea[] {
         return this.ordenarLista(tareas, (a, b) => this.compararPorTitulo(a, b));
     }
 
+    /**
+     * Ordena las tareas por fecha de vencimiento (más próximas primero).
+     */
     public porFechaVencimiento(tareas: Tarea[]): Tarea[] {
         return this.ordenarLista(tareas, (a, b) => this.compararPorFechaVencimiento(a, b));
     }
 
+    /**
+     * Ordena las tareas por fecha de creación (más antiguas primero).
+     */
     public porFechaCreacion(tareas: Tarea[]): Tarea[] {
         return this.ordenarLista(tareas, (a, b) => this.compararPorFechaCreacion(a, b));
     }
 
-    // Aquí limpiamos la variable redundante
+    /**
+     * Ordena las tareas según la dificultad, basándose en el arreglo de orden provisto.
+     */
+    // Aquí limpiamos la variable redundante y pasamos el orden necesario
     public porDificultad(tareas: Tarea[], orden: string[]): Tarea[] {
-        return this.ordenarLista(tareas, (a, b) => this.compararPorDificultad(a, b,orden )
-        );
+        return this.ordenarLista(tareas, (a, b) => this.compararPorDificultad(a, b, orden));
     }
 }
-
-
 
 
 

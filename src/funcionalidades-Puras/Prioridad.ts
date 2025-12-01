@@ -77,7 +77,7 @@ function asignarPrioridadLogica(tarea: Tarea): string {
     }
     
     // Si ninguna regla estricta se cumple, es NORMAL
-    return "Normal"; 
+    return "Baja"; 
 }
 
 // Exportamos la función usando la declaración tradicional

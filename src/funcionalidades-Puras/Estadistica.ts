@@ -8,9 +8,9 @@ function contarPorEstado(tareas: Tarea[], estado: string): number {
 }
 
 function contarPorDificultad(tareas: Tarea[], dificultad: string): number {
-    return (tareas.reduce((count, tarea) => {
+    return Math.ceil((tareas.reduce((count=0, tarea) => {
         return count + (tarea.getDificultad() === dificultad ? 1 : 0);
-    }, 0)/ tareas.length) * 100;
+    }, 0)/ tareas.length) * 100);
 } 
 
 
