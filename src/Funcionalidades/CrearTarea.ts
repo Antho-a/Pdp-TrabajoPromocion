@@ -1,12 +1,19 @@
 import { Tarea, DIFICULTADES_TAREA, ESTADOS_TAREA } from "../models/Tarea"; 
-import { rangoNumero , preguntaYN} from "../funcionalidades-Puras/Comprobaciones";
 import PromptSync from "prompt-sync";
+import { pedirNumero } from "./Verificadores";
 
+// Inicialización de la librería para capturar entrada por consola
 const prompt = PromptSync();
 
+/**
+ * Función encargada de solicitar datos al usuario para construir una nueva Tarea.
+ * Realiza validaciones de longitud, duplicados y tipos de datos.
+ * * @param tareas - Lista actual de tareas para verificar que no se repitan títulos.
+ * @returns Una nueva instancia de la clase Tarea con los datos ingresados.
+ */
 function CrearTarea(tareas : Tarea[]) : Tarea{
     
-    // Función visual simple
+    // Función visual simple: Limpia la consola y muestra un encabezado estilizado
     const header = (titulo: string) => {
         console.clear();
         console.log("\n========================================");
@@ -14,99 +21,92 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
         console.log("========================================\n");
     };
 
-    // Variables de flujo
+    // Variables de flujo para control de bucles (aunque 'validacion' no se usa explícitamente abajo, se declara aquí)
     let validacion: boolean = true;
     let confirmar: string;
     
-    // Variables de la tarea
+    // Declaración de variables que almacenarán las propiedades de la nueva tarea
     let titulo :string;
     let descripcion: string;
-    let estado: string ;
-    let dificultad: string;
+    let estado: number ;
+    let dificultad: number;
     let fechaVencimiento: Date | undefined;
     let fechaCreacion: Date;
 
     // --- 1. TÍTULO ---
     header("Paso 1/4: Título");
+    // Primer intento de captura del título
     titulo = prompt("Ingrese el título de la tarea (max 100 caracteres): ")?.trim() ||"";
+    
+    // Bucle de validación: Se repite si está vacío, excede 100 caracteres o si el título ya existe en el array 'tareas'
     while(titulo.length == 0 || titulo.length > 100 || tareas.some(tarea => tarea.getTitulo().toLowerCase() === titulo.toLowerCase())){
         console.log("\n [!] Título inválido. Intente nuevamente.")
         titulo = prompt("Ingrese el título de la tarea (max 100 caracteres): ")?.trim() ||"";
     }
 
+    // --- 2. DESCRIPCIÓN ---
     header("Paso 2/4: Descripción");
+    // Captura de la descripción (es opcional, por lo que puede quedar vacía)
     descripcion = prompt("Ingrese la descripción (Opcional, max 500 caracteres): ")?.trim() ||"";
+    
+    // Validación de longitud máxima permitida para la descripción
     while(descripcion.length > 500){
         console.log("\n [!] Descripción inválida. Intente nuevamente.")
         descripcion = prompt("Ingrese la descripción (max 500 caracteres): ")?.trim() ||"";
     }
 
-    header("Paso 3/4: Estado");
-    estado=prompt("Seleccione el estado actual(pendiente, en curso, terminada): ")?.trim() ||"";
-    while(estado!="" && !ESTADOS_TAREA.includes(estado)){
-        console.log("\n [!] Estado inválido. Intente nuevamente.")
-        estado=prompt("Seleccione el estado actual(pendiente, en curso, terminada): ")?.trim() ||"";
-    }
-    if(estado==""){
-        console.log("\n [i] Estado por defecto: Pendiente.");
-        estado="1";
-        
-    }
+    // --- 3. ESTADO ---
+    header("Paso 3/4: Estado"); 
+     
+    // Muestra en consola la lista de estados disponibles
+    for(let i:number = 0 ; i<ESTADOS_TAREA.length ; i++ ){ console.log((i+1)+"). "+ESTADOS_TAREA[i])}
+    console.log("")
 
-    header("Paso 4/4: Dificultad");
-    dificultad=prompt("Seleccione la dificultad(baja, media, alta): ")?.trim() ||"";
-    while(dificultad!="" && !DIFICULTADES_TAREA.includes(dificultad)){
-        console.log("\n [!] Dificultad inválida. Intente nuevamente.")
-        dificultad=prompt("Seleccione la dificultad(baja, media, alta): ")?.trim() ||"";
-    }
-    if(dificultad==""){
-        console.log("\n [i] Dificultad por defecto: Baja.");
-        dificultad="1";
-    }
-
-    header("Configuración final");
+    // Solicita un número al usuario validando que esté dentro del rango del array ESTADOS_TAREA
+    estado = pedirNumero(" Seleccione el estado actual." , 1 , ESTADOS_TAREA.length , true);
     
-    console.log("¿Desea asignar una fecha de vencimiento?");
-    console.log("   [1] Sí");
-    console.log("   [2] No");
+    // --- 4. DIFICULTAD ---
+    header("Paso 4/4: Dificultad"); 
+    // Muestra en consola la lista de dificultades disponibles
+    for(let i:number = 0 ; i<DIFICULTADES_TAREA.length ; i++ ){console.log((i+1)+"). "+DIFICULTADES_TAREA[i])}
+    console.log("")
+    
+    // Solicita seleccionar la dificultad validando el rango numérico
+    dificultad=pedirNumero(" Seleccione La dificultad." , 1 , DIFICULTADES_TAREA.length , true);
+    
+    // --- CONFIGURACIÓN DE FECHA ---
+    header("Configuración final");
+    // Pregunta al usuario si desea agregar una fecha límite (1 = Sí, 2 = No)
+    let opcionFecha : number = pedirNumero( "¿Desea asignar una fecha de vencimiento?\n   [1] Sí\n   [2] No",1,2,false);
 
-   let opcionFecha : string = rangoNumero( prompt(" > ")?.trim() || "",1,2,false);
-
-    while(opcionFecha === "-1"){
-        opcionFecha = rangoNumero( prompt(" [!] Entrada inválida. Intente de nuevo: ")?.trim() || "",1,2,false); 
-    }
-
-    if(opcionFecha === "1"){
+    // Si el usuario elige "Sí" (opción 1), solicita los componentes de la fecha
+    if(opcionFecha === 1){
         console.log("\n--- Ingrese la fecha ---");
         
-        let año : number = parseInt(prompt(" Año (YYYY): ")?.trim() || "");
-        while(isNaN(año) || año < 2024){
-            console.log("   [!] Año inválido.");
-            año = parseInt(prompt(" Año (YYYY): ")?.trim() || "");
-        }
+        // Solicita año, mes y día con sus respectivos rangos de validación
+        let año : number = pedirNumero("Porfavor indique el año de vencimiento\n" , 2025 , 2035 , false);
         
-        let mes : number = parseInt(prompt(" Mes (1-12): ")?.trim() || "");
-        while(isNaN(mes) || mes < 1 || mes > 12){
-            console.log("   [!] Mes inválido.");
-            mes = parseInt(prompt(" Mes (1-12): ")?.trim() || "");
-        }
+        // Nota: El mes en el constructor de Date suele ser 0-11, aquí se pide 1-12. 
+        // (Se asume que la conversión se maneja internamente o al instanciar Date).
+        let mes : number = pedirNumero("Porfavor indique el mes de vencimiento \n" , 1 , 12 , false);
         
-        let dia : number = parseInt(prompt(" Día (1-31): ")?.trim() || "");
-        while(isNaN(dia) || dia < 1 || dia > 31){
-            console.log("   [!] Día inválido.");
-            dia = parseInt(prompt(" Día (1-31): ")?.trim() || "");
-        }
+        let dia : number = pedirNumero("Porfavor indique el dia de vencimiento \n" , 1 , 31 , false);
 
+        // Crea el objeto Date con los datos recolectados
         fechaVencimiento = new Date(año, mes, dia);
     }else{
+        // Si elige "No", la fecha queda indefinida
         fechaVencimiento = undefined;
     }
     
+    // Limpia la pantalla y muestra mensaje de éxito
     console.clear();
     console.log("\n========================================");
     console.log("      ¡TAREA CREADA CON ÉXITO!");
     console.log("========================================\n");
-    return new Tarea(titulo, descripcion, ESTADOS_TAREA[parseInt(estado)-1], DIFICULTADES_TAREA[parseInt(dificultad)-1], fechaVencimiento);
+    
+    // Retorna la nueva instancia usando los índices obtenidos (ajustados con -1 para base 0)
+    return new Tarea(titulo, descripcion, ESTADOS_TAREA[estado-1], DIFICULTADES_TAREA[dificultad-1], fechaVencimiento);
 }
 
 export { CrearTarea };

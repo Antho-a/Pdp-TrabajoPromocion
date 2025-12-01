@@ -14,36 +14,40 @@
     "titulo": "asdasdasd",
     "descripcion": "asdasdasd",
     "estado": "Pendiente",
-    "dificultad": "Baja: ⭐",
+    "dificultad": "Alta: ⭐⭐⭐",
     "fechaCreacion": "2025-11-30T12:58:02.424Z",
-    "eliminado": false
+    "eliminado": true,
+    "ultimaEdicion": "2025-12-01T14:34:50.133Z"
   },
   {
     "id": "df5d091d-4582-4b94-a527-82ccbf8d5651",
     "titulo": "12eqweqweqw",
     "descripcion": "asdasd",
     "estado": "Pendiente",
-    "dificultad": "Baja: ⭐",
+    "dificultad": "Media: ⭐⭐",
     "fechaCreacion": "2025-11-30T13:41:45.079Z",
-    "eliminado": false
+    "eliminado": false,
+    "ultimaEdicion": "2025-12-01T14:43:32.398Z"
   },
   {
     "id": "1a0eb61a-9995-40d6-a62d-b7be086c9126",
     "titulo": "ppp",
     "descripcion": "n",
     "estado": "Pendiente",
-    "dificultad": "Baja: ⭐",
+    "dificultad": "Media: ⭐⭐ ",
     "fechaCreacion": "2025-11-30T13:44:08.142Z",
-    "eliminado": false
+    "eliminado": false,
+    "ultimaEdicion": "2025-12-01T14:41:14.880Z"
   },
   {
     "id": "3e1574d9-e296-4e6e-b261-bfec63a640fc",
     "titulo": "avion",
     "descripcion": "hola",
     "estado": "Pendiente",
-    "dificultad": "Baja: ⭐",
+    "dificultad": "Alta: ⭐⭐⭐",
     "fechaCreacion": "2025-11-30T22:07:17.335Z",
-    "eliminado": false
+    "eliminado": false,
+    "ultimaEdicion": "2025-12-01T14:44:29.311Z"
   },
   {
     "id": "d864dfc5-38a9-460c-9ae8-ad8eb1977839",
@@ -54,5 +58,15 @@
     "fechaCreacion": "2025-11-30T22:36:43.865Z",
     "eliminado": true,
     "ultimaEdicion": "2025-11-30T22:37:16.396Z"
+  },
+  {
+    "id": "e1da06de-4da4-4e8e-827f-7a18185b315d",
+    "titulo": "abeja",
+    "descripcion": "hola",
+    "estado": "Cancelada",
+    "dificultad": "Baja: ⭐",
+    "fechaCreacion": "2025-12-01T13:21:27.567Z",
+    "eliminado": false,
+    "ultimaEdicion": "2025-12-01T13:57:28.890Z"
   }
 ]
