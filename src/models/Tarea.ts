@@ -89,34 +89,29 @@ export class Tarea {
 
     public setDescripcion(descripcion: string): void {
         this.descripcion = descripcion;
-        this.ultimaEdicion = new Date();
     }
 
     public setEstado(estado: string): void {
         this.estado = estado;
-        this.ultimaEdicion = new Date();
     }
 
     public setDificultad(dificultad: string): void {
         this.dificultad = dificultad;
-        this.ultimaEdicion = new Date();
     }
 
     public setFechaVencimiento(fechaVencimiento: Date): void {
         this.fechaVencimiento = fechaVencimiento;
-        this.ultimaEdicion = new Date();
     }
 
     // Alterna el estado de eliminado (Soft Delete)
     public setElimado(){
         this.eliminado = !this.eliminado;
-        this.ultimaEdicion = new Date();
+        this.setEdicion();
     }
 
     // Actualiza el título
     public setTitulo (tituloNuevo:string){
         this.titulo = tituloNuevo;
-        // Nota: Aquí falta this.ultimaEdicion = new Date() en tu lógica original,
         // pero se suele llamar a setEdicion() externamente en el gestor.
     }
 

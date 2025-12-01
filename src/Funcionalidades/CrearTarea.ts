@@ -4,22 +4,21 @@ import { pedirNumero } from "./Verificadores";
 
 // Inicialización de la librería para capturar entrada por consola
 const prompt = PromptSync();
- const pausar = () => prompt("\n Presione Enter para continuar...");
 /**
  * Función encargada de solicitar datos al usuario para construir una nueva Tarea.
  * Realiza validaciones de longitud, duplicados y tipos de datos.
  * * @param tareas - Lista actual de tareas para verificar que no se repitan títulos.
  * @returns Una nueva instancia de la clase Tarea con los datos ingresados.
  */
+function header(titulo: string) {
+    return "========================================\n" +
+           `   NUEVA TAREA | ${titulo}\n` +
+           "========================================\n";
+}
 function CrearTarea(tareas : Tarea[]) : Tarea{
     
     // Función visual simple: Limpia la consola y muestra un encabezado estilizado
-    const header = (titulo: string) => {
-        console.clear();
-        console.log("\n========================================");
-        console.log(`   NUEVA TAREA | ${titulo}`);
-        console.log("========================================\n");
-    };
+
 
     // Variables de flujo para control de bucles (aunque 'validacion' no se usa explícitamente abajo, se declara aquí)
     let validacion: boolean = true;
@@ -31,9 +30,9 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
     let estado: number ;
     let dificultad: number;
     let fechaVencimiento: Date | undefined;
-    let fechaCreacion: Date;
 
     // --- 1. TÍTULO ---
+    console.clear();
     header("Paso 1/4: Título");
     // Primer intento de captura del título
     titulo = prompt("Ingrese el título de la tarea (max 100 caracteres): ")?.trim() ||"";
@@ -43,8 +42,9 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
         console.log("\n [!] Título inválido. Intente nuevamente.")
         titulo = prompt("Ingrese el título de la tarea (max 100 caracteres): ")?.trim() ||"";
     }
-    pausar();
+    prompt("\n Presione Enter para continuar...");
     // --- 2. DESCRIPCIÓN ---
+    console.clear();
     header("Paso 2/4: Descripción");
     // Captura de la descripción (es opcional, por lo que puede quedar vacía)
     descripcion = prompt("Ingrese la descripción (Opcional, max 500 caracteres): ")?.trim() ||"";
@@ -54,8 +54,9 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
         console.log("\n [!] Descripción inválida. Intente nuevamente.")
         descripcion = prompt("Ingrese la descripción (max 500 caracteres): ")?.trim() ||"";
     }
-    pausar();
+    prompt("\n Presione Enter para continuar...");
     // --- 3. ESTADO ---
+    console.clear();
     header("Paso 3/4: Estado"); 
      
     // Muestra en consola la lista de estados disponibles
@@ -64,8 +65,9 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
 
     // Solicita un número al usuario validando que esté dentro del rango del array ESTADOS_TAREA
     estado = pedirNumero(" Seleccione el estado actual." , 1 , ESTADOS_TAREA.length , true);
-    pausar();
+    prompt("\n Presione Enter para continuar...");
     // --- 4. DIFICULTAD ---
+    console.clear();
     header("Paso 4/4: Dificultad"); 
     // Muestra en consola la lista de dificultades disponibles
     for(let i:number = 0 ; i<DIFICULTADES_TAREA.length ; i++ ){console.log((i+1)+"). "+DIFICULTADES_TAREA[i])}
@@ -73,8 +75,9 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
     
     // Solicita seleccionar la dificultad validando el rango numérico
     dificultad=pedirNumero(" Seleccione La dificultad." , 1 , DIFICULTADES_TAREA.length , true);
-    pausar();
+    prompt("\n Presione Enter para continuar...");
     // --- CONFIGURACIÓN DE FECHA ---
+    console.clear();
     header("Configuración final");
     // Pregunta al usuario si desea agregar una fecha límite (1 = Sí, 2 = No)
     let opcionFecha : number = pedirNumero( "¿Desea asignar una fecha de vencimiento?\n   [1] Sí\n   [2] No",1,2,false);

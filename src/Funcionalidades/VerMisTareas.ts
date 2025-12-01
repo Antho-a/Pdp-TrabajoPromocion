@@ -5,7 +5,7 @@ import { pedirNumero , Confirmacion} from "./Verificadores";
 import { gestor } from "../logica/Gestor";
 import { filtroBusqueda, filtrarTodas } from "../funcionalidades-Puras/FiltroSegunEstado"
 import { OrdenadorTareas } from "../funcionalidades-Puras/ObjetoOrdenamiento";
-import { mostarTitulos , mostrarTareaCompletas } from "../Interfaz/ConsolaTarea";
+import { mostrarTitulos , mostrarTareaCompletas } from "../Interfaz/ConsolaTarea";
 import { validate } from "uuid";
 
 // Inicialización de la entrada por consola
@@ -44,10 +44,6 @@ function verMisTareas( tareas : gestor ):void{
     let datonumerico : number; // Variable auxiliar para capturar entradas numéricas (estados, dificultades)
 
     let datoFecha : Date ; // Variable auxiliar para construir fechas
-
-    // Helper para pausar la ejecución hasta que el usuario presione Enter
-    const pausar = () => prompt("\n Presione Enter para continuar...");
-
     //-------------------------------------------------------------
     // 1. SELECCIÓN DE FILTRO (¿Qué tareas quiero ver?)
     //-------------------------------------------------------------
@@ -71,7 +67,7 @@ function verMisTareas( tareas : gestor ):void{
         break;
         case 5:
             console.log("\n Volviendo al menú principal...");
-            pausar();
+            prompt("\n Presione Enter para continuar...");
             return; // Sale de la función si elige volver al menú
     }
 
@@ -107,12 +103,12 @@ function verMisTareas( tareas : gestor ):void{
     console.log("========================================\n");
     
     // Muestra la lista numerada de títulos para que el usuario elija
-    console.log(mostarTitulos(tareasfiltradasOrdenanadas , tareasfiltradasOrdenanadas.length , 0 ));
+    console.log(mostrarTitulos(tareasfiltradasOrdenanadas));
 
     // Validación: Si el filtro no arrojó resultados, no hay nada que seleccionar
     if (tareasfiltradasOrdenanadas.length === 0) {
         console.log("\n [i] No se encontraron tareas con ese criterio.");
-        pausar();
+        prompt("\n Presione Enter para continuar...");
         return;
     }
 
@@ -132,7 +128,7 @@ function verMisTareas( tareas : gestor ):void{
     // Muestra todos los detalles de la tarea seleccionada
     console.log(mostrarTareaCompletas(tareaSeleccionada));
 
-    pausar();
+    prompt("\n Presione Enter para continuar...");
 
     //-------------------------------------------------------------
     // 5. MÓDULO DE EDICIÓN
@@ -144,7 +140,7 @@ function verMisTareas( tareas : gestor ):void{
     if(opcionVerTareas == 0){
         console.clear();
         console.log("Volviendo al menu")
-        pausar();
+        prompt("\n Presione Enter para continuar...");
         return; // Sale si no quiere editar
     }
 
@@ -174,7 +170,7 @@ function verMisTareas( tareas : gestor ):void{
                 tareaSeleccionada.setTitulo(dato); // Actualiza en memoria local
                 tareaSeleccionada.setEdicion(); // Actualiza fecha de última edición
                 
-                pausar();
+                prompt("\n Presione Enter para continuar...");
             break;
 
             case 2: // EDITAR DESCRIPCIÓN
@@ -190,7 +186,7 @@ function verMisTareas( tareas : gestor ):void{
                 tareaSeleccionada.setEdicion();
 
 
-                pausar();
+                prompt("\n Presione Enter para continuar...");
             break;
 
             case 3: // EDITAR ESTADO
@@ -204,7 +200,7 @@ function verMisTareas( tareas : gestor ):void{
                 tareaSeleccionada.setEdicion();
 
 
-                pausar();
+                prompt("\n Presione Enter para continuar...");
             break;
 
             case 4: // EDITAR DIFICULTAD
@@ -217,7 +213,7 @@ function verMisTareas( tareas : gestor ):void{
                 tareaSeleccionada.setDificultad(DIFICULTADES_TAREA[datonumerico-1]);
                 tareaSeleccionada.setEdicion();
 
-                pausar();
+                prompt("\n Presione Enter para continuar...");
             break;
 
             case 5: // EDITAR FECHA DE VENCIMIENTO
@@ -234,14 +230,14 @@ function verMisTareas( tareas : gestor ):void{
                 tareaSeleccionada.setFechaVencimiento(datoFecha);
                 tareaSeleccionada.setEdicion();
 
-                pausar();
+                prompt("\n Presione Enter para continuar...");
             break;
 
             case 6: // SALIR DEL SUBMENÚ DE EDICIÓN
                 console.clear();
                 tareas.actItem();
                 console.log("Volviendo al menu principal");
-                pausar();
+                prompt("\n Presione Enter para continuar...");
                 validacion = false; // Rompe el bucle de edición
             break;
         }

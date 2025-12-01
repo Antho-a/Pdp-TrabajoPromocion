@@ -14,15 +14,11 @@ import { Tarea } from "../models/Tarea";
  * @param contador - Índice actual para la recursividad (iniciar en 0).
  * @returns Un string concatenado con todos los títulos numerados.
  */
-function mostarTitulos(tareas: Tarea[] , longitud : number , contador : number): String {
-    if(contador < longitud){ 
-        // Agregué el índice [1], [2] para que coincida con la selección del usuario
-        // y un poco de indentación para que se vea ordenado.
-        return `   [${contador + 1}] ` + tareas[contador].getTitulo() + "\n" + mostarTitulos(tareas, longitud, contador + 1);
-    } 
-    else{ 
-        return ""; 
-    }
+function mostrarTitulos(tareas: Tarea[]): string {
+    return tareas.map((tarea, index) => {
+        // Generamos la línea individual pura
+        return ` [${index + 1}] ${tarea.getTitulo()}`;
+    }).join('\n'); // Unimos el array de líneas con el salto de línea
 }
 
 /**
@@ -79,4 +75,4 @@ function mostrarTareaCompletas(tarea: Tarea): String {
            "\n========================================";    
 }
 
-export {mostarTitulos , mostrarTareaCompletas}
+export {mostrarTitulos , mostrarTareaCompletas}

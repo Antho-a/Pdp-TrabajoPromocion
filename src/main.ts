@@ -7,16 +7,17 @@ import { CrearTarea } from "./Funcionalidades/CrearTarea";
 import { filtrarTodas } from "./funcionalidades-Puras/FiltroSegunEstado";
 import { pedirNumero } from "./Funcionalidades/Verificadores";
 import { BusquedaTitulo } from "./funcionalidades-Puras/FiltroSegunEstado";
-import { mostarTitulos, mostrarTareaCompletas } from "./Interfaz/ConsolaTarea";
-import { manejoConsultas, manejoEstadisticas } from "./logica/FlujodeNegocio";
+import { mostrarTitulos, mostrarTareaCompletas } from "./Interfaz/ConsolaTarea";
+import { manejoConsultas, manejoEliminar, manejoEstadisticas } from "./logica/FlujodeNegocio";
+import { DIFICULTADES_TAREA, ESTADOS_TAREA } from "./models/Tarea";
 function main(): void {
 
 
     const gestorTareas = new gestor("GuardadoDeTareas");
-    // Helper simple para pausar
-    const pausar = () => prompt("\n Presione Enter para continuar...");
-    let input: number;
 
+    let input: number;
+    let ESTADOS = ESTADOS_TAREA;
+    let DIFICULTAD = DIFICULTADES_TAREA;
 
 
     do {
@@ -32,7 +33,7 @@ function main(): void {
                    vertarea(gestorTareas);
                 }else{
                     console.log("\n [!] No hay tareas para mostrar.");
-                    pausar();
+                    prompt("\n Presione Enter para continuar...");
                 } 
             break;
 
@@ -41,9 +42,10 @@ function main(): void {
                     console.log(" No hay tareas disponibles.");
                 }
                 else {
-                    console.log(mostarTitulos(gestorTareas.getItems() , gestorTareas.getItems().length , 0));
-                    let tituloBuscar: string
-                    tituloBuscar= prompt("\n Ingrese el título de la tarea a buscar: ").trim();
+                    const titulos = mostrarTitulos(gestorTareas.getItems());
+                    console.log("Listado de Tareas:\n");
+                    console.log(titulos);
+                    let tituloBuscar= prompt("\n Ingrese el título de la tarea a buscar: ").trim();
                     const tareaEncontrada = BusquedaTitulo(gestorTareas.getItems(), tituloBuscar);
                     if (tareaEncontrada) {
                         console.log("Tarea encontrada:");
@@ -51,7 +53,7 @@ function main(): void {
                     } else {
                         console.log("No se encontró ninguna tarea con ese título.");
                     }
-                    pausar();
+                    prompt("\n Presione Enter para continuar...");
                 }
             break;
 
@@ -60,55 +62,43 @@ function main(): void {
                 gestorTareas.addItem(CrearTarea(gestorTareas.getItems()));
                 
                 console.log("\n [OK] Tarea guardada en el sistema.");
-                pausar();
+                prompt("\n Presione Enter para continuar...");
             break;
             
             case 4:
                 if(gestorTareas.getItems().length == 0){
                     console.log(" No hay tareas disponibles.");
-                    pausar();
+                    prompt("\n Presione Enter para continuar...");
                 }else{
-                    let tareas=filtrarTodas(gestorTareas.getItems());
-                    tareas.forEach(tarea => {
-                        console.log(tarea.toString());
-                        console.log("----------------------------------------");
-                    });
-                    console.log(`${tareas.length+1}. Salir del eliminar`)
-
-                    const idEliminar = pedirNumero("Ingrese la tarea que desea eliminar: ", 1 , tareas.length+1 , false)
-
-                    if(idEliminar == (tareas.length+1)){
-                        console.log("Volviendo al menu...");
-                        pausar();
-                    }
-                    const exito = gestorTareas.deleteItem(tareas[idEliminar-1].getId());
-                    if(exito){
-                        console.log("\n [OK] Tarea eliminada exitosamente.");
-                    }  else{
-                        console.log("\n [!] Error al eliminar la tarea.");
-                    }
-                    pausar();
+                    let tareas=gestorTareas.getItems();
+                    console.log(mostrarTitulos(tareas))
+                    const Eliminar = pedirNumero("Ingrese la tarea que desea eliminar: ", 1 , tareas.length , false);
+                    let resultadoEliminacion=manejoEliminar(gestorTareas,gestorTareas.getItems()[Eliminar-1]);
+                    console.log(resultadoEliminacion);
+                    prompt("\n Presione Enter para continuar...");
                 }
             break;
             case 5:
                 if(gestorTareas.getItems().length == 0){
                     console.log(" No hay tareas disponibles.");
-                    pausar();
+                    prompt("\n Presione Enter para continuar...");
                 }else{
                     input=pedirNumero(menuEstad(), 1 , 4 , false);
-                    manejoEstadisticas(input, gestorTareas);
-                    pausar();
+                    let estadisticas=manejoEstadisticas(input, gestorTareas.getItems(),ESTADOS,DIFICULTAD);
+                    console.log(estadisticas);
+                    prompt("\n Presione Enter para continuar...");
                 }
                 
             break;
             case 6:
                 if(gestorTareas.getItems().length == 0){
                     console.log(" No hay tareas disponibles.");
-                    pausar();
+                    prompt("\n Presione Enter para continuar...");
                 }else{
                     input=pedirNumero(menuConsultas(), 1 , 5 , false);
-                    manejoConsultas(input, gestorTareas);
-                    pausar();
+                    let resultado=manejoConsultas(input, gestorTareas.getItems(), new Date());
+                    console.log(resultado);
+                    prompt("\n Presione Enter para continuar...");
                 }
             break;
             case 7:

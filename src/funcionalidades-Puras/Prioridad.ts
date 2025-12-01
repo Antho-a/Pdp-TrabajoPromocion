@@ -12,11 +12,9 @@ run = Logic.run;
 // -------------------------------------------------------------------
 
 // 2. Helper puro con declaración de función tradicional
-function calcularDiasRestantes(fechaVencimiento: Date): number {
-    const hoy = new Date();
-    const vencimiento = new Date(fechaVencimiento); 
+function calcularDiasRestantes(fechaVencimiento: Date, fechaActual:Date): number {; 
 
-    const diffTiempo = vencimiento.getTime() - hoy.getTime();
+    const diffTiempo = fechaVencimiento.getTime() - fechaActual.getTime();
     const diffDias = Math.ceil(diffTiempo / (1000 * 60 * 60 * 24));
     return diffDias;
 }
@@ -29,7 +27,7 @@ function calcularDiasRestantes(fechaVencimiento: Date): number {
  * * @param tarea La tarea a evaluar.
  * @returns El nivel de prioridad inferido.
  */
-function asignarPrioridadLogica(tarea: Tarea): string {
+function asignarPrioridadLogica(tarea: Tarea,fechaActual:Date): string {
     const dificultad: string = tarea.getDificultad(); 
     const vencimiento: Date | undefined = tarea.getFechaVencimiento();
     
@@ -38,7 +36,7 @@ function asignarPrioridadLogica(tarea: Tarea): string {
         return "Media"; 
     }
 
-    const diasRestantes: number = calcularDiasRestantes(vencimiento);
+    const diasRestantes: number = calcularDiasRestantes(vencimiento, fechaActual);
 
     // 1. Declarar la Variable Lógica (la incógnita que buscamos)
     const P = lvar(); 

@@ -21,11 +21,11 @@ function filtroBusqueda(tareas : Tarea[], estado:string) : Tarea[]{
     // La condición verifica dos cosas:
     // 1. Que la tarea no esté eliminada (Soft delete).
     // 2. Que el estado de la tarea coincida estrictamente con el argumento recibido.
-    return tareas.filter(tarea => tarea.getEliminado() === false && tarea.getEstado() === estado);
+    return tareas.filter(tarea => tarea.getEstado() === estado);
 }
 
 function BusquedaTitulo(tareas : Tarea[], titulo:string) : Tarea | undefined{
-    return tareas.find(tarea => tarea.getEliminado() === false && tarea.getTitulo().toLowerCase().includes(titulo.toLowerCase()));
+    return tareas.find(tarea =>tarea.getTitulo().toLowerCase().includes(titulo.toLowerCase()));
 }
 
 export{ filtroBusqueda , filtrarTodas, BusquedaTitulo}

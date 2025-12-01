@@ -1,71 +1,75 @@
 import { gestor } from "../logica/Gestor";
+import { Tarea } from "../models/Tarea";
 import { contarPorDificultad,contarPorEstado } from "../funcionalidades-Puras/Estadistica";
 import { asignarPrioridadLogica } from "../funcionalidades-Puras/Prioridad";
-import { DIFICULTADES_TAREA, ESTADOS_TAREA } from "../models/Tarea";
-function manejoEstadisticas(opcion: number, gestorTareas: gestor): void {
+function manejoEstadisticas(opcion: number, tareas: Tarea[],estados:string[],dificultades:string[]): string | void {
     
     switch (opcion) {
         case 1:
-            console.log(`\n Total de Tareas: ${gestorTareas.getItems().length}`);
-            break;
+            return(`\n Total de Tareas: ${tareas.length}`);
         case 2:
-            console.log("\n Porcentaje de Tareas por estado:");
-            ESTADOS_TAREA.forEach(estado => {
-                console.log(`- ${estado}: ${contarPorEstado(gestorTareas.getItems(), estado)} %`);
-            }
-            );
-            break;
+            return ("\n Porcentaje de Tareas por estado:\n" + estados.map(estado => 
+                `- ${estado} = ${contarPorEstado(tareas, estado)} %`
+            ).join('\n'));
         case 3:
-            console.log("\n Porcentaje de Tareas por dificultad:");
-            DIFICULTADES_TAREA.forEach(dificultad => {
-                console.log(`- ${dificultad} = ${contarPorDificultad(gestorTareas.getItems(), dificultad)} %`);
-            }
-            );
-            break;
+            return ("\n Porcentaje de Tareas por dificultad:\n" + dificultades.map(dificultad => 
+                `- ${dificultad} = ${contarPorDificultad(tareas, dificultad)} %`
+            ).join('\n'));
+ 
         case 4:
-            // Volver al menú principal
-            break;
-        default:
-            console.log("\n [!] Opción inválida. Intente nuevamente.");
-            break;
+            return " Volver al menú principal";
+
     }
 }
-function manejoConsultas(opcion: number, gestorTareas: gestor): void {
+function manejoConsultas(opcion: number, tareas:Tarea[],fecha:Date): string | void {
     switch (opcion) {
         case 1:
-            console.log("\n Tareas de alta prioridad:");
-            gestorTareas.getItems().forEach(tarea => {
-                if (asignarPrioridadLogica(tarea) === "Alta") {
-                    console.log(tarea.toString());
-                    console.log("----------------------------------------");
-                }
-            });
-            
-            break;
+            return "\n Tareas de alta prioridad:\n"+tareas.filter(tarea => asignarPrioridadLogica(tarea,fecha) === "Alta").map(tarea => tarea.toString())
+            .join('\n----------------------------------------\n');
         case 2:
-            console.log("\n Tareas relacionadas:");
+            return "\n Tareas relacionadas:";
             // Lógica para mostrar tareas relacionadas
             break;
         case 3:
-            console.log("\n Listado de tareas vencidas:");
-            // Lógica para mostrar tareas vencidas
-            break;
-        case 4:
-            // Volver al menú principal
-            break;
-        case 5:
-            console.log("\n Prioridad de todas las Tareas:");
-            gestorTareas.getItems().forEach(tarea => {
-                    console.log(asignarPrioridadLogica(tarea));
-                    console.log(tarea.toString());
-                    console.log("----------------------------------------");
-                
+            let aux=tareas.filter(tarea => {
+            const vencimiento = tarea.getFechaVencimiento();
+
+            // 1. Descartamos tareas sin fecha de vencimiento (undefined/null)
+            if (!vencimiento) {
+                return false;
+            }
+            // 2. Comparamos: La tarea está vencida si su tiempo de vencimiento
+            // es menor que el tiempo de referencia (es decir, ya pasó).
+            return vencimiento.getTime() <= fecha.getTime();
             });
-            break;
-        default:
-            console.log("\n [!] Opción inválida. Intente nuevamente.");
-            break;
+            if(aux.length === 0){
+                return "\n No hay tareas vencidas.";
+            }
+            return "\n Tareas vencidas\n"+aux.map(tarea => tarea.toString())
+            .join('\n----------------------------------------\n');
+        case 4:
+            return "\n Tareas de alta prioridad:\n" + tareas
+            .map(tarea => {
+                // 1. Calculamos la prioridad de la tarea
+                const prioridad = asignarPrioridadLogica(tarea, fecha);
+                
+                // 2. Devolvemos una cadena formateada que incluye el TÍTULO y la PRIORIDAD
+                return `${tarea.getTitulo()} (Prioridad: ${prioridad})`; 
+            })
+            // 3. Unimos todas las cadenas generadas con tu separador
+            .join('\n----------------------------------------\n');
+        case 5:
+            return " Volver al menú principal";
     }
 }
-export { manejoEstadisticas, manejoConsultas};
+
+function manejoEliminar(gestorTareas: gestor,tarea:Tarea): string{
+    const exito = gestorTareas.deleteItem(tarea.getId());
+    if(exito){
+        return("\n [OK] Tarea eliminada exitosamente.");
+    }  else{
+        return("\n [!] Error al eliminar la tarea.");
+    }
+}
+export { manejoEstadisticas, manejoConsultas, manejoEliminar };
 
