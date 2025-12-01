@@ -35,7 +35,7 @@ function asignarPrioridadLogica(tarea: Tarea): string {
     
     // Manejo de caso sin fecha de vencimiento
     if (!vencimiento) {
-        return "Normal"; 
+        return "Media"; 
     }
 
     const diasRestantes: number = calcularDiasRestantes(vencimiento);
@@ -47,21 +47,21 @@ function asignarPrioridadLogica(tarea: Tarea): string {
     
     // --- REGLA A: Alta --- (Vence en <= 2 días Y Dificultad Alta)
     const reglaAlta = and(
-        eq(diasRestantes <= 2, true),
+        eq(diasRestantes <= 4, true),
         eq(dificultad, 'Alta: ⭐⭐⭐'), 
         eq(P, "Alta")
     );
     
     // --- REGLA B: MEDIA --- (Vence en <= 6 días O Dificultad Media)
     const reglaMedia = and( 
-        eq(diasRestantes <= 6, true),
+        eq(diasRestantes <= 8, true),
         eq(dificultad, 'Media: ⭐⭐'),
         eq(P, "Media")
     );
 
     // --- REGLA C: BAJA --- (Vence en más de 6 días Y Dificultad Baja)
     const reglaBaja = and(
-        eq(diasRestantes > 6, true),
+        eq(diasRestantes > 8, true),
         eq(dificultad, 'Baja : ⭐'),
         eq(P, "Baja")
     );
@@ -69,7 +69,7 @@ function asignarPrioridadLogica(tarea: Tarea): string {
     // 3. Ejecutar el Motor Lógico
     const consulta = or(reglaAlta, reglaMedia, reglaBaja);
 
-    const resultados: string[] = run(P, consulta);
+    const resultados: string[] = run(consulta, P);
 
     // 4. Devolver el resultado inferido
     if (resultados.length > 0) {

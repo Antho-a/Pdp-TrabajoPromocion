@@ -4,7 +4,7 @@ import { pedirNumero } from "./Verificadores";
 
 // Inicialización de la librería para capturar entrada por consola
 const prompt = PromptSync();
-
+ const pausar = () => prompt("\n Presione Enter para continuar...");
 /**
  * Función encargada de solicitar datos al usuario para construir una nueva Tarea.
  * Realiza validaciones de longitud, duplicados y tipos de datos.
@@ -43,7 +43,7 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
         console.log("\n [!] Título inválido. Intente nuevamente.")
         titulo = prompt("Ingrese el título de la tarea (max 100 caracteres): ")?.trim() ||"";
     }
-
+    pausar();
     // --- 2. DESCRIPCIÓN ---
     header("Paso 2/4: Descripción");
     // Captura de la descripción (es opcional, por lo que puede quedar vacía)
@@ -54,7 +54,7 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
         console.log("\n [!] Descripción inválida. Intente nuevamente.")
         descripcion = prompt("Ingrese la descripción (max 500 caracteres): ")?.trim() ||"";
     }
-
+    pausar();
     // --- 3. ESTADO ---
     header("Paso 3/4: Estado"); 
      
@@ -64,7 +64,7 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
 
     // Solicita un número al usuario validando que esté dentro del rango del array ESTADOS_TAREA
     estado = pedirNumero(" Seleccione el estado actual." , 1 , ESTADOS_TAREA.length , true);
-    
+    pausar();
     // --- 4. DIFICULTAD ---
     header("Paso 4/4: Dificultad"); 
     // Muestra en consola la lista de dificultades disponibles
@@ -73,7 +73,7 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
     
     // Solicita seleccionar la dificultad validando el rango numérico
     dificultad=pedirNumero(" Seleccione La dificultad." , 1 , DIFICULTADES_TAREA.length , true);
-    
+    pausar();
     // --- CONFIGURACIÓN DE FECHA ---
     header("Configuración final");
     // Pregunta al usuario si desea agregar una fecha límite (1 = Sí, 2 = No)
@@ -98,7 +98,7 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
         // Si elige "No", la fecha queda indefinida
         fechaVencimiento = undefined;
     }
-    
+
     // Limpia la pantalla y muestra mensaje de éxito
     console.clear();
     console.log("\n========================================");

@@ -130,7 +130,7 @@ export class Tarea {
      * Útil para depuración o visualización rápida en consola.
      */
     public toString(): string {
-        return `Tarea \nID=${this.id}\n Título=${this.titulo}\n Descripción=${this.descripcion}\n Estado=${this.estado}\n Dificultad=${this.dificultad}\n Fecha de Creación=${this.fechaCreacion.toLocaleString()}\n Fecha de Vencimiento=${this.fechaVencimiento ? this.fechaVencimiento.toLocaleString() : 'No establecida'}\n Última Edición=${this.ultimaEdicion ? this.ultimaEdicion.toLocaleString() : 'No editada'}\n Eliminado=${this.eliminado}]`;
+        return `---Título=${this.titulo}---\nID=${this.id}\n Descripción=${this.descripcion}\n Estado=${this.estado}\n Dificultad=${this.dificultad}\n Fecha de Creación=${this.fechaCreacion.toLocaleString()}\n Fecha de Vencimiento=${this.fechaVencimiento ? this.fechaVencimiento.toLocaleString() : 'No establecida'}\n Última Edición=${this.ultimaEdicion ? this.ultimaEdicion.toLocaleString() : 'No editada'}\n Eliminado=${this.eliminado}]`;
     }
     
     /**

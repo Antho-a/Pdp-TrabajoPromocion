@@ -1,92 +1,65 @@
 [
   {
-    "id": "1311fc44-fa0f-47ac-bbb9-9163052e303e",
-    "titulo": "asdasd",
-    "descripcion": "asasd",
-    "estado": "Pendiente",
-    "dificultad": "Baja: ⭐",
-    "fechaCreacion": "2025-11-30T09:49:47.669Z",
-    "eliminado": true,
-    "ultimaEdicion": "2025-11-30T22:08:16.745Z"
-  },
-  {
-    "id": "5b990bef-f4ac-46c0-82cb-e45b55b55d99",
-    "titulo": "asdasdasd",
-    "descripcion": "asdasdasd",
+    "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+    "titulo": "Integración con API de Pagos",
+    "descripcion": "Implementar el checkout final y la comunicación con el servicio de pagos externo.",
     "estado": "Pendiente",
     "dificultad": "Alta: ⭐⭐⭐",
-    "fechaCreacion": "2025-11-30T12:58:02.424Z",
-    "eliminado": true,
-    "ultimaEdicion": "2025-12-01T14:34:50.133Z"
-  },
-  {
-    "id": "df5d091d-4582-4b94-a527-82ccbf8d5651",
-    "titulo": "12eqweqweqw",
-    "descripcion": "asdasd",
-    "estado": "Pendiente",
-    "dificultad": "Media: ⭐⭐",
-    "fechaCreacion": "2025-11-30T13:41:45.079Z",
+    "fechaCreacion": "2025-12-01T15:00:00.000Z",
+    "fechaVencimiento": "2025-12-05T23:59:59.000Z",
     "eliminado": false,
-    "ultimaEdicion": "2025-12-01T14:43:32.398Z"
+    "ultimaEdicion": "2025-12-01T15:00:00.000Z"
   },
   {
-    "id": "1a0eb61a-9995-40d6-a62d-b7be086c9126",
-    "titulo": "ppp",
-    "descripcion": "n",
-    "estado": "Pendiente",
+    "id": "b2c3d4e5-f6a7-8901-2345-67890abcdef0",
+    "titulo": "Diseño de Base de Datos para Logs",
+    "descripcion": "Definir el esquema de la tabla de logs de errores críticos del sistema.",
+    "estado": "En Curso",
     "dificultad": "Media: ⭐⭐",
-    "fechaCreacion": "2025-11-30T13:44:08.142Z",
+    "fechaCreacion": "2025-12-01T10:00:00.000Z",
+    "fechaVencimiento": "2025-12-05T12:00:00.000Z",
     "eliminado": false,
-    "ultimaEdicion": "2025-12-01T14:41:14.880Z"
+    "ultimaEdicion": "2025-12-01T15:30:00.000Z"
   },
   {
-    "id": "3e1574d9-e296-4e6e-b261-bfec63a640fc",
-    "titulo": "avion",
-    "descripcion": "hola",
+    "id": "c3d4e5f6-a7b8-9012-3456-7890abcdef01",
+    "titulo": "Reunión de Planificación Semanal",
+    "descripcion": "Preparar el temario y las métricas de la semana pasada para la revisión.",
+    "estado": "Pendiente",
+    "dificultad": "Baja: ⭐",
+    "fechaCreacion": "2025-11-30T09:00:00.000Z",
+    "fechaVencimiento": "2025-12-05T09:30:00.000Z",
+    "eliminado": false,
+    "ultimaEdicion": "2025-12-01T10:00:00.000Z"
+  },
+  {
+    "id": "d4e5f6a7-b8c9-0123-4567-890abcdef012",
+    "titulo": "Investigar Migración a Webpack 5",
+    "descripcion": "Estudiar la documentación para la actualización de la herramienta de empaquetado.",
     "estado": "Pendiente",
     "dificultad": "Alta: ⭐⭐⭐",
-    "fechaCreacion": "2025-11-30T22:07:17.335Z",
+    "fechaCreacion": "2025-12-01T08:00:00.000Z",
     "eliminado": false,
-    "ultimaEdicion": "2025-12-01T14:44:29.311Z"
+    "ultimaEdicion": "2025-12-01T08:00:00.000Z"
   },
   {
-    "id": "d864dfc5-38a9-460c-9ae8-ad8eb1977839",
-    "titulo": "fran",
-    "descripcion": "fran",
-    "estado": "Pendiente",
-    "dificultad": "Baja: ⭐",
-    "fechaCreacion": "2025-11-30T22:36:43.865Z",
-    "eliminado": true,
-    "ultimaEdicion": "2025-11-30T22:37:16.396Z"
-  },
-  {
-    "id": "e1da06de-4da4-4e8e-827f-7a18185b315d",
-    "titulo": "abeja",
-    "descripcion": "hola",
-    "estado": "Cancelada",
-    "dificultad": "Baja: ⭐",
-    "fechaCreacion": "2025-12-01T13:21:27.567Z",
-    "eliminado": false,
-    "ultimaEdicion": "2025-12-01T13:57:28.890Z"
-  },
-  {
-    "id": "4e58cecb-4f01-4825-b980-fd9e699386ad",
-    "titulo": "alejo",
-    "descripcion": "come pan",
+    "id": "e5f6a7b8-c9d0-1234-5678-90abcdef0123",
+    "titulo": "Test de Usabilidad en Móviles",
+    "descripcion": "Realizar pruebas en dispositivos iOS y Android para detectar problemas de diseño.",
     "estado": "Terminada",
-    "dificultad": "Alta: ⭐⭐⭐",
-    "fechaCreacion": "2025-12-01T15:27:46.723Z",
-    "fechaVencimiento": "2026-06-23T03:00:00.000Z",
-    "eliminado": false
+    "dificultad": "Media: ⭐⭐",
+    "fechaCreacion": "2025-11-29T11:00:00.000Z",
+    "eliminado": false,
+    "ultimaEdicion": "2025-12-01T15:55:00.000Z"
   },
   {
-    "id": "a243e017-ba87-402e-b705-2de8570ce40f",
-    "titulo": "asdasd",
-    "descripcion": "a",
-    "estado": "Pendiente",
-    "dificultad": "Baja: ⭐",
-    "fechaCreacion": "2025-12-01T15:29:50.388Z",
-    "fechaVencimiento": "2027-11-11T03:00:00.000Z",
+    "id": "dd601ec6-e31b-488f-86a7-07b0f3a3d11d",
+    "titulo": "Arreglar el Tanque mark V",
+    "descripcion": "Hacer cambios en el panel y revisar municiones",
+    "estado": "En curso",
+    "dificultad": "Media: ⭐⭐",
+    "fechaCreacion": "2025-12-01T16:09:47.993Z",
+    "fechaVencimiento": "2025-12-08T03:00:00.000Z",
     "eliminado": false
   }
 ]

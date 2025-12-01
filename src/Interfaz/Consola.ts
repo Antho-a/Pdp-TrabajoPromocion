@@ -98,14 +98,16 @@ function OrdenTareasASC(): string {
  * ```
  * @returns El string con las opciones del menú de estadísticas.
  */
-function Estadisiticas(): string {
+function menuEstad(): string {
     return "\n" +
-    "--- ESTADÍSTICAS ---\n" +
-    "\n" +
-    "   [1] Total de tareas\n" +
-    "   [2] Porcentaje de tareas por estado\n" +
-    "   [3] Porcentaje de tareas por dificultad\n" +
-    "   [4] Volver al menú principal\n";
+    "========================================\n" +
+    "          ESTADISTICA              \n" +
+    "========================================\n" +
+    "   [1] - Total de Tareas\n" +
+    "   [2] - Porcentaje de Tareas por estado\n" +
+    "   [3] - Porcentaje de Tareas por dificultad\n" +
+    "   [4] - Volver al menú principal\n" +
+    "========================================";
 }
 
 /**
@@ -118,18 +120,22 @@ function Estadisiticas(): string {
  * [1] Tareas de alta prioridad
  * [2] Tareas relacionadas
  * [3] Listado de tareas vencidas
- * [4] Volver al menú principal
+ * [4] Prioridad de todas las Tareas
+ * [5] Volver al menu principal
  * ```
  * @returns El string con las opciones de consultas avanzadas.
  */
-function Consultas(): string {
+function menuConsultas(): string {
     return "\n" +
-    "--- CONSULTAS AVANZADAS ---\n" +
-    "\n" +
-    "   [1] Tareas de alta prioridad\n" +
-    "   [2] Tareas relacionadas\n" +
-    "   [3] Listado de tareas vencidas\n" +
-    "   [4] Volver al menú principal\n";
+    "========================================\n" +
+    "         CONSULTAS EXTRAS              \n" +
+    "========================================\n" +
+    "   [1] - Tareas de alta prioridad\n" +
+    "   [2] - Tareas relacionadas\n" +
+    "   [3] - Listado de tareas vencidas\n" +
+    "   [4] - Prioridad de todas las Tareas\n" +
+    "   [5] - Volver al menú principal\n" +
+    "========================================";
 }
 
 /**
@@ -171,34 +177,12 @@ function PreguntaEditar(): string {
 function EditarY_N (): string{
     return "- Desea editar la tarea? (Y/N)\n"
 }
-function menuEstad(): string {
-    return "\n" +
-    "========================================\n" +
-    "          ESTADISTICA              \n" +
-    "========================================\n" +
-    "   [1] - Total de Tareas\n" +
-    "   [2] - Porcentaje de Tareas por estado\n" +
-    "   [3] - Porcentaje de Tareas por dificultad\n" +
-    "   [4] - Volver al menú principal\n" +
-    "========================================";
-}
-function menuConsultas(): string {
-    return "\n" +
-    "========================================\n" +
-    "         CONSULTAS EXTRAS              \n" +
-    "========================================\n" +
-    "   [1] - Tareas de alta prioridad\n" +
-    "   [2] - Tareas relacionadas\n" +
-    "   [3] - Listado de tareas vencidas\n" +
-    "   [4] - Volver al menú principal\n" +
-    "========================================";
-}
+
+
 export { 
     menu, 
     VerMisTareas, 
     OrdenTareasASC, 
-    Estadisiticas, 
-    Consultas, 
     PreguntaEditar,
     EditarY_N,
     menuEstad,
