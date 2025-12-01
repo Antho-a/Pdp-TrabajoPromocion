@@ -93,7 +93,7 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
         let dia : number = pedirNumero("Porfavor indique el dia de vencimiento \n" , 1 , 31 , false);
 
         // Crea el objeto Date con los datos recolectados
-        fechaVencimiento = new Date(año, mes, dia);
+        fechaVencimiento = new Date(año, mes-1, dia);
     }else{
         // Si elige "No", la fecha queda indefinida
         fechaVencimiento = undefined;

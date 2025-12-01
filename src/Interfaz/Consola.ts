@@ -26,7 +26,7 @@ function menu(): string {
     "   [2] - Buscar Tarea\n" +
     "   [3] - Agregar Tarea\n" +
     "   [4] - Eliminar Tarea\n" +
-    "   [4] - Estadisticas\n" +
+    "   [5] - Estadisticas\n" +
     "   [6] - Consultas extras\n" +
     "   [7] - Salir\n" +
     "========================================";

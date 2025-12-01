@@ -3,13 +3,13 @@ import { Tarea, ESTADOS_TAREA, DIFICULTADES_TAREA } from "../models/Tarea";
 
 function contarPorEstado(tareas: Tarea[], estado: string): number {
     return (tareas.reduce((count, tarea) => {
-        return count + (tarea.getEstado() === estado ? 1 : 0);
+        return count + (tarea.getEstado().toLocaleLowerCase() === estado.toLocaleLowerCase() ? 1 : 0);
     }, 0)/ tareas.length) * 100;
 }
 
 function contarPorDificultad(tareas: Tarea[], dificultad: string): number {
-    return Math.ceil((tareas.reduce((count=0, tarea) => {
-        return count + (tarea.getDificultad() === dificultad ? 1 : 0);
+    return Math.ceil((tareas.reduce((count, tarea) => {
+        return count + (tarea.getDificultad().toLocaleLowerCase() === dificultad.toLocaleLowerCase()  ? 1 : 0);
     }, 0)/ tareas.length) * 100);
 } 
 

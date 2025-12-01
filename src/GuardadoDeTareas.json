@@ -34,7 +34,7 @@
     "titulo": "ppp",
     "descripcion": "n",
     "estado": "Pendiente",
-    "dificultad": "Media: ⭐⭐ ",
+    "dificultad": "Media: ⭐⭐",
     "fechaCreacion": "2025-11-30T13:44:08.142Z",
     "eliminado": false,
     "ultimaEdicion": "2025-12-01T14:41:14.880Z"
@@ -68,5 +68,25 @@
     "fechaCreacion": "2025-12-01T13:21:27.567Z",
     "eliminado": false,
     "ultimaEdicion": "2025-12-01T13:57:28.890Z"
+  },
+  {
+    "id": "4e58cecb-4f01-4825-b980-fd9e699386ad",
+    "titulo": "alejo",
+    "descripcion": "come pan",
+    "estado": "Terminada",
+    "dificultad": "Alta: ⭐⭐⭐",
+    "fechaCreacion": "2025-12-01T15:27:46.723Z",
+    "fechaVencimiento": "2026-06-23T03:00:00.000Z",
+    "eliminado": false
+  },
+  {
+    "id": "a243e017-ba87-402e-b705-2de8570ce40f",
+    "titulo": "asdasd",
+    "descripcion": "a",
+    "estado": "Pendiente",
+    "dificultad": "Baja: ⭐",
+    "fechaCreacion": "2025-12-01T15:29:50.388Z",
+    "fechaVencimiento": "2027-11-11T03:00:00.000Z",
+    "eliminado": false
   }
 ]

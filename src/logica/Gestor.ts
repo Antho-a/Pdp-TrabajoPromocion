@@ -88,7 +88,10 @@ export class gestor {
      * Retorna el arreglo completo de tareas cargadas en memoria.
      */
     public getItems(): Tarea[] {
-        return this.items;
-    }   
+    // 1. Usa filter() para crear un nuevo array.
+    // 2. Solo incluye los objetos donde 'item.eliminado' NO sea 'true'.
+    //    (Es decir, donde sea 'false' o la propiedad no exista/sea null/undefined)
+    return this.items.filter(item => item.getEliminado() !== true);
+  }   
 
 }

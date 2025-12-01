@@ -1,6 +1,7 @@
 import { gestor } from "../logica/Gestor";
 import { contarPorDificultad,contarPorEstado } from "../funcionalidades-Puras/Estadistica";
 import { asignarPrioridadLogica } from "../funcionalidades-Puras/Prioridad";
+import { DIFICULTADES_TAREA, ESTADOS_TAREA } from "../models/Tarea";
 function manejoEstadisticas(opcion: number, gestorTareas: gestor): void {
     switch (opcion) {
         case 1:
@@ -8,15 +9,17 @@ function manejoEstadisticas(opcion: number, gestorTareas: gestor): void {
             break;
         case 2:
             console.log("\n Porcentaje de Tareas por estado:");
-            console.log(contarPorEstado(gestorTareas.getItems(), "Pendiente"));
-            console.log(contarPorEstado(gestorTareas.getItems(), "En Proceso"));
-            console.log(contarPorEstado(gestorTareas.getItems(), "Terminada"));
+            ESTADOS_TAREA.forEach(estado => {
+                console.log(`- ${estado}: ${contarPorEstado(gestorTareas.getItems(), estado)} %`);
+            }
+            );
             break;
         case 3:
             console.log("\n Porcentaje de Tareas por dificultad:");
-            console.log(contarPorDificultad(gestorTareas.getItems(), "Baja: ⭐"));
-            console.log(contarPorDificultad(gestorTareas.getItems(), "Media: ⭐⭐"));
-            console.log(contarPorDificultad(gestorTareas.getItems(), "Alta: ⭐⭐⭐"));
+            DIFICULTADES_TAREA.forEach(dificultad => {
+                console.log(`- ${dificultad}: ${contarPorDificultad(gestorTareas.getItems(), dificultad)} %`);
+            }
+            );
             break;
         case 4:
             // Volver al menú principal
