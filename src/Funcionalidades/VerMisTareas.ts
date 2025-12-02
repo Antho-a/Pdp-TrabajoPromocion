@@ -1,111 +1,99 @@
+
 import PromptSync from "prompt-sync";
-import { DIFICULTADES_TAREA, Tarea ,ESTADOS_TAREA} from "../models/Tarea";  
-import { OrdenTareasASC, VerMisTareas,EditarY_N, PreguntaEditar, obtenerListaEstados,obtenerListaDificultades } from "../Interfaz/Consola";
-import { pedirNumero , Confirmacion,esfechaValida,esTituloValido,esDescripcionValida} from "./Verificadores";
+import { DIFICULTADES_TAREA, Tarea, ESTADOS_TAREA } from "../models/Tarea";
+import { OrdenTareasASC, VerMisTareas, EditarY_N, PreguntaEditar, obtenerListaEstados, obtenerListaDificultades } from "../Interfaz/Consola";
+import { pedirNumero, Confirmacion, esfechaValida, esTituloValido, esDescripcionValida } from "./Verificadores";
 import { gestor } from "../logica/Gestor";
 import { filtroBusqueda, filtrarTodas } from "../funcionalidades-Puras/FiltroSegunEstado"
 import { OrdenadorTareas } from "../funcionalidades-Puras/ObjetoOrdenamiento";
-import { mostrarTitulos , mostrarTareaCompletas } from "../Interfaz/ConsolaTarea";
-
-
-// Inicialización de la entrada por consola
+import { mostrarTitulos, mostrarTareaCompletas } from "../Interfaz/consolaTarea";
 const prompt = PromptSync();
 
 /**
- * Función principal para visualizar y gestionar las tareas existentes.
- * Permite filtrar, ordenar, ver detalles y editar tareas específicas.
- * * @param tareas - Instancia del gestor que contiene la lista de tareas.
+ * Gestiona el flujo completo de visualización y edición de tareas.
+ * 
+ * Esta función impura implementa una interfaz de usuario interactiva
+ * que guía al usuario a través de las siguientes etapas:
+ * 
+ * 1. **Filtrado**: Selección de tareas por estado (Todas/Pendientes/En curso/Terminadas)
+ * 2. **Ordenamiento**: Criterio de ordenación (Título/Vencimiento/Creación/Dificultad)
+ * 3. **Selección**: Elección de tarea específica de la lista filtrada
+ * 4. **Visualización**: Muestra detallada de la tarea seleccionada
+ * 5. **Edición**: Modificación opcional de cualquier campo de la tarea
+ * 
+ * @function verMisTareas
+ * @param {gestor} tareas - Instancia del gestor que administra la colección de tareas.
+ * @returns {void}
+ * 
+ * @example
+ * if (gestorTareas.getItems().length > 0) {
+ *   verMisTareas(gestorTareas);
+ * }
  */
-function verMisTareas( tareas : gestor ):void{
-
+function verMisTareas(tareas: gestor): void {
     console.clear();
 
-    // --- VARIABLES DE USO INTERNO ---
+    let todasLasTareas: Tarea[] = tareas.getItems();
+    let opcionVerTareas: number;
+    const Ordenador = new OrdenadorTareas;
+    let tareasfiltradas: Tarea[] = [];
+    let tareasfiltradasOrdenanadas: Tarea[] = [];
+    let tareaSeleccionada: Tarea;
+    let validacion: boolean;
+    let index: number;
+    let dato: string;
+    let datonumerico: number;
+    let datoFecha: Date;
 
-    // Obtiene una copia de todas las tareas del gestor
-    let todasLasTareas : Tarea [] = tareas.getItems();  
+    console.log(VerMisTareas());
 
-    let opcionVerTareas : number ; // Variable principal para capturar la opción numérica del usuario
-    
-    const Ordenador = new OrdenadorTareas; // Objeto encargado de la lógica de ordenamiento
-    
-    let tareasfiltradas : Tarea[] = []; // Almacena las tareas resultantes del primer filtro (por estado/dificultad)
-    
-    let tareasfiltradasOrdenanadas : Tarea[] = []; // Almacena las tareas filtradas y posteriormente ordenadas
-    
-    let tareaSeleccionada : Tarea ; // Almacena la tarea específica que el usuario decide ver/editar
+    opcionVerTareas = pedirNumero("", 1, 5, false);
 
-    let validacion : boolean ; // Controla el bucle de edición para permitir múltiples cambios seguidos
-    
-    let index : number; // Guarda el índice seleccionado por el usuario para buscar en el arreglo
-    
-    let dato : string; // Variable auxiliar para capturar entradas de texto (título, descripción)
-    
-    let datonumerico : number; // Variable auxiliar para capturar entradas numéricas (estados, dificultades)
-
-    let datoFecha : Date ; // Variable auxiliar para construir fechas
-    //-------------------------------------------------------------
-    // 1. SELECCIÓN DE FILTRO (¿Qué tareas quiero ver?)
-    //-------------------------------------------------------------
-    console.log(VerMisTareas()); // Muestra el menú de filtros (Todas, Alta, Media, Baja, Salir)
-
-    opcionVerTareas = pedirNumero("" , 1 , 5 , false);
-
-    // Lógica de filtrado según la dificultad o mostrar todas
-    switch(opcionVerTareas){
+    switch (opcionVerTareas) {
         case 1:
-            tareasfiltradas = filtrarTodas(tareas.getItems()); // Retorna todas las tareas sin filtrar
-        break;
+            tareasfiltradas = filtrarTodas(tareas.getItems());
+            break;
         case 2:
-            tareasfiltradas = filtroBusqueda(tareas.getItems() ,ESTADOS_TAREA[0] ); // Filtra  pendientes
-        break;
+            tareasfiltradas = filtroBusqueda(tareas.getItems(), ESTADOS_TAREA[0]);
+            break;
         case 3:
-            tareasfiltradas= filtroBusqueda(tareas.getItems(), ESTADOS_TAREA[1]); // Filtra en curso
-        break
+            tareasfiltradas = filtroBusqueda(tareas.getItems(), ESTADOS_TAREA[1]);
+            break
         case 4:
-            tareasfiltradas = filtroBusqueda(tareas.getItems(), ESTADOS_TAREA[2]); // Filtra termiandas
-        break;
+            tareasfiltradas = filtroBusqueda(tareas.getItems(), ESTADOS_TAREA[2]);
+            break;
         case 5:
             console.log("\n Volviendo al menú principal...");
             prompt("\n Presione Enter para continuar...");
-            return; // Sale de la función si elige volver al menú
+            return;
     }
 
-    //-------------------------------------------------------------
-    // 2. SELECCIÓN DE ORDENAMIENTO (¿Cómo las quiero ver?)
-    //-------------------------------------------------------------
     console.clear();
-    console.log(OrdenTareasASC()); // Muestra menú de criterios de orden (Título, Vencimiento, Creación, Dificultad)
-    opcionVerTareas = pedirNumero("" , 1 , 5, false);
+    console.log(OrdenTareasASC());
+    opcionVerTareas = pedirNumero("", 1, 5, false);
 
-    // Lógica de ordenamiento aplicada al arreglo ya filtrado
-    switch(opcionVerTareas){
+    switch (opcionVerTareas) {
         case 1:
             tareasfiltradasOrdenanadas = Ordenador.porTitulo(tareasfiltradas);
-        break;
-        case 2 :
+            break;
+        case 2:
             tareasfiltradasOrdenanadas = Ordenador.porFechaVencimiento(tareasfiltradas);
-        break;
-        case 3 : 
+            break;
+        case 3:
             tareasfiltradasOrdenanadas = Ordenador.porFechaCreacion(tareasfiltradas);
-        break;
-        case 4 :
+            break;
+        case 4:
             tareasfiltradasOrdenanadas = Ordenador.porDificultad(tareasfiltradas, DIFICULTADES_TAREA)
-        break;
+            break;
     }
 
-    //-------------------------------------------------------------
-    // 3. SELECCIÓN DE TAREA ESPECÍFICA
-    //-------------------------------------------------------------
     console.clear();
     console.log("\n========================================");
     console.log("       RESULTADOS DE LA BÚSQUEDA        ");
     console.log("========================================\n");
-    
-    // Muestra la lista numerada de títulos para que el usuario elija
+
     console.log(mostrarTitulos(tareasfiltradasOrdenanadas));
 
-    // Validación: Si el filtro no arrojó resultados, no hay nada que seleccionar
     if (tareasfiltradasOrdenanadas.length === 0) {
         console.log("\n [i] No se encontraron tareas con ese criterio.");
         prompt("\n Presione Enter para continuar...");
@@ -113,137 +101,117 @@ function verMisTareas( tareas : gestor ):void{
     }
 
     console.log("\n----------------------------------------");
-    // El usuario selecciona el índice de la tarea que quiere inspeccionar
-    index = pedirNumero("Indique la tarea que desea visualizar" , 1 , tareasfiltradasOrdenanadas.length, false);
 
-    //-------------------------------------------------------------
-    // 4. VISUALIZACIÓN DETALLADA
-    //-------------------------------------------------------------
+    index = pedirNumero("Indique la tarea que desea visualizar", 1, tareasfiltradasOrdenanadas.length, false);
+
     console.clear();
 
-    // Reconstruimos la tarea desde JSON/Objeto para asegurar tener sus métodos
-    // Nota: index-1 convierte la selección humana (1,2,3) a índice de array (0,1,2)
-    tareaSeleccionada = tareasfiltradasOrdenanadas[index-1];
-    
-    // Muestra todos los detalles de la tarea seleccionada
+    tareaSeleccionada = tareasfiltradasOrdenanadas[index - 1];
+
     console.log(mostrarTareaCompletas(tareaSeleccionada));
 
     prompt("\n Presione Enter para continuar...");
 
-    //-------------------------------------------------------------
-    // 5. MÓDULO DE EDICIÓN
-    //-------------------------------------------------------------
-    
-    // Pregunta si desea editar la tarea visualizada
     opcionVerTareas = Confirmacion(EditarY_N())
 
-    if(opcionVerTareas == 0){
+    if (opcionVerTareas == 0) {
         console.clear();
         console.log("Volviendo al menu")
         prompt("\n Presione Enter para continuar...");
-        return; // Sale si no quiere editar
+        return;
     }
 
-    // Bucle de edición: Permite realizar múltiples cambios en la misma sesión
-    do{
+    do {
         console.clear();
-        // Muestra el estado actual de la tarea antes de editar
+
         console.log(mostrarTareaCompletas(tareaSeleccionada));
-        
-        validacion = true ; // Mantiene el bucle activo por defecto
-        
-        // Muestra menú de campos editables (Título, Descripción, Estado, Dificultad, Vencimiento, Salir)
-        opcionVerTareas = pedirNumero(PreguntaEditar() , 1 , 6, false);
-        let fechaVencimien:Date;
-        switch(opcionVerTareas){
 
-            case 1: // EDITAR TÍTULO
+        validacion = true;
+
+        opcionVerTareas = pedirNumero(PreguntaEditar(), 1, 6, false);
+        let fechaVencimien: Date;
+        switch (opcionVerTareas) {
+
+            case 1:
                 console.clear();
-                dato = prompt("Ingrese el título de la tarea (max 100 caracteres): ")?.trim() ||"";
-                
-                // Validación: Longitud y unicidad (no puede llamarse igual a otra tarea activa)
-                while(!esTituloValido(dato, tareas.getItems())){
+                dato = prompt("Ingrese el título de la tarea (max 100 caracteres): ")?.trim() || "";
+
+                while (!esTituloValido(dato, tareas.getItems())) {
                     console.log("\n [!] Título inválido. Intente nuevamente.")
-                    dato = prompt("Ingrese el título de la tarea (max 100 caracteres): ")?.trim() ||"";
+                    dato = prompt("Ingrese el título de la tarea (max 100 caracteres): ")?.trim() || "";
                 }
-                
-                tareaSeleccionada.setTitulo(dato); // Actualiza en memoria local
-                tareaSeleccionada.setEdicion(); // Actualiza fecha de última edición
-                
-                prompt("\n Presione Enter para continuar...");
-            break;
 
-            case 2: // EDITAR DESCRIPCIÓN
+                tareaSeleccionada.setTitulo(dato);
+                tareaSeleccionada.setEdicion();
+
+                prompt("\n Presione Enter para continuar...");
+                break;
+
+            case 2:
                 console.clear();
-                dato = prompt("Ingrese la descripción (Opcional, max 500 caracteres): ")?.trim() ||"";
-                
-                // Validación de longitud
-                while(!esDescripcionValida(dato)){
+                dato = prompt("Ingrese la descripción (Opcional, max 500 caracteres): ")?.trim() || "";
+
+                while (!esDescripcionValida(dato)) {
                     console.log("\n [!] Descripción inválida. Intente nuevamente.")
-                    dato = prompt("Ingrese la descripción (max 500 caracteres): ")?.trim() ||"";
+                    dato = prompt("Ingrese la descripción (max 500 caracteres): ")?.trim() || "";
                 }
                 tareaSeleccionada.setDescripcion(dato);
                 tareaSeleccionada.setEdicion();
 
-
                 prompt("\n Presione Enter para continuar...");
-            break;
+                break;
 
-            case 3: // EDITAR ESTADO
+            case 3:
                 console.clear();
-                // Muestra lista de estados disponibles
+
                 console.log(obtenerListaEstados)
-                
-                datonumerico = pedirNumero("Seleccione el nuevo estado actual - Apretar ENTER la dejara en pendiente -" , 1 , ESTADOS_TAREA.length , true);
-                
-                tareaSeleccionada.setEstado(ESTADOS_TAREA[datonumerico-1]);
+
+                datonumerico = pedirNumero("Seleccione el nuevo estado actual - Apretar ENTER la dejara en pendiente -", 1, ESTADOS_TAREA.length, true);
+
+                tareaSeleccionada.setEstado(ESTADOS_TAREA[datonumerico - 1]);
                 tareaSeleccionada.setEdicion();
 
-
                 prompt("\n Presione Enter para continuar...");
-            break;
+                break;
 
-            case 4: // EDITAR DIFICULTAD
+            case 4:
                 console.clear();
-                // Muestra lista de dificultades
+
                 console.log(obtenerListaDificultades);
-                
-                datonumerico=pedirNumero("Seleccione la nueva dificultad. - Apretar ENTER la dejara en Baja: ⭐ - " , 1 , DIFICULTADES_TAREA.length , true);
-                
-                tareaSeleccionada.setDificultad(DIFICULTADES_TAREA[datonumerico-1]);
+
+                datonumerico = pedirNumero("Seleccione la nueva dificultad. - Apretar ENTER la dejara en Baja: ⭐ - ", 1, DIFICULTADES_TAREA.length, true);
+
+                tareaSeleccionada.setDificultad(DIFICULTADES_TAREA[datonumerico - 1]);
                 tareaSeleccionada.setEdicion();
 
                 prompt("\n Presione Enter para continuar...");
-            break;
+                break;
 
-            case 5: // EDITAR FECHA DE VENCIMIENTO
+            case 5:
                 console.clear();
-                do{
+                do {
                     console.log("\n--- Ingrese la fecha ---");
-                    
-                    let año : number = pedirNumero("Porfavor indique el año de vencimiento\n" , 2025 , 2035 , false);
 
-                    let mes : number = pedirNumero("Porfavor indique el mes de vencimiento \n" , 1 , 12 , false);
-                    
-                    let dia : number = pedirNumero("Porfavor indique el dia de vencimiento \n" , 1 , 31 , false);
+                    let año: number = pedirNumero("Porfavor indique el año de vencimiento\n", 2025, 2035, false);
+                    let mes: number = pedirNumero("Porfavor indique el mes de vencimiento \n", 1, 12, false);
+                    let dia: number = pedirNumero("Porfavor indique el dia de vencimiento \n", 1, 31, false);
 
-
-                    fechaVencimien = new Date(año, mes-1, dia);
-                }while(!esfechaValida(fechaVencimien,new Date()));
+                    fechaVencimien = new Date(año, mes - 1, dia);
+                } while (!esfechaValida(fechaVencimien, new Date()));
                 tareaSeleccionada.setEdicion();
                 prompt("\n Presione Enter para continuar...");
-            break;
+                break;
 
-            case 6: // SALIR DEL SUBMENÚ DE EDICIÓN
+            case 6:
                 console.clear();
                 tareas.actItem();
                 console.log("Volviendo al menu principal");
                 prompt("\n Presione Enter para continuar...");
-                validacion = false; // Rompe el bucle de edición
-            break;
+                validacion = false;
+                break;
         }
-    }while(validacion);
-    
+    } while (validacion);
+
 }
 
-export {verMisTareas as vertarea}
+export { verMisTareas as vertarea };

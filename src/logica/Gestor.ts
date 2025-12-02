@@ -1,97 +1,181 @@
-import { readFromFile,writeToFile } from "../utils/FileFunction";
+import { readFromFile, writeToFile } from "../utils/FileFunction";
 import { Tarea } from "../models/Tarea";
 
 /**
- * Clase Gestor: Actúa como el administrador de estado y persistencia.
- * Mantiene la lista de tareas en memoria y se encarga de guardar/cargar
- * los datos en el archivo JSON correspondiente.
+ * Clase Gestor que actúa como capa de persistencia y administración de tareas.
+ * 
+ * Implementa el patrón Repository, encapsulando toda la lógica de
+ * almacenamiento y recuperación de datos. Mantiene una colección
+ * de tareas en memoria sincronizada con el archivo JSON de respaldo.
+ * 
+ * Características:
+ * - Carga automática de datos al instanciar
+ * - Persistencia automática en cada operación de escritura
+ * - Soporte para borrado lógico (soft delete)
+ * - Conversión automática de JSON a instancias de clase
+ * 
+ * @class gestor
+ * @example
+ * const gestorTareas = new gestor("MisTareas");
+ * gestorTareas.addItem(nuevaTarea);
+ * const todasLasTareas = gestorTareas.getItems();
  */
 export class gestor {
 
-    private name: string;   // Ruta o nombre del archivo JSON de persistencia
-    private items: Tarea[]= []; // Arreglo en memoria que contiene las instancias de Tarea
+    /**
+     * Nombre del archivo JSON para persistencia (sin extensión).
+     * @private
+     * @type {string}
+     */
+    private name: string;
 
-    constructor(name: string){
+    /**
+     * Colección en memoria de instancias de Tarea.
+     * @private
+     * @type {Tarea[]}
+     */
+    private items: Tarea[] = [];
+
+    /**
+     * Crea una nueva instancia del gestor y carga los datos existentes.
+     * 
+     * @constructor
+     * @param {string} name - Nombre del archivo de persistencia (sin extensión .json).
+     * 
+     * @example
+     * const gestor = new gestor("TareasProyecto");
+     */
+    constructor(name: string) {
         this.name = name;
-        this.load(); // Carga los datos del archivo inmediatamente al instanciar la clase
+        this.load();
     }
 
     /**
-     * Lee el archivo JSON y convierte los objetos planos en instancias reales de la clase Tarea.
-     * Esto es fundamental para recuperar los métodos (getters/setters) que se pierden en el JSON.
+     * Carga las tareas desde el archivo JSON y las convierte a instancias de clase.
+     * 
+     * Este método es fundamental porque JSON.parse() retorna objetos planos
+     * sin los métodos de la clase Tarea. Utiliza Tarea.fromJSON() para
+     * restaurar la funcionalidad completa de cada objeto.
+     * 
+     * @private
+     * @returns {void}
      */
-    // esto cambio ya que las tareas se cargan pero de manera obj que es totalmente diferente a la clase tarea 
-    // expliacion https://chatgpt.com/share/692aafab-d70c-8001-ba3b-c56c86831afc esta a final 
-    private load():void{
-        //cargar las tareas desde el archivo JSON
+    private load(): void {
         const data = readFromFile(this.name);
-        // Transformamos cada objeto genérico (any) en una instancia de Tarea usando el método estático fromJSON
         this.items = data.map((obj: any) => Tarea.fromJSON(obj));
     }
 
     /**
-     * Guarda el estado actual del arreglo 'items' en el archivo físico.
-     * Se llama automáticamente después de cada modificación (add, update, delete).
+     * Persiste el estado actual de la colección en el archivo JSON.
+     * 
+     * Se invoca automáticamente después de cada operación que modifica datos
+     * para garantizar la sincronización entre memoria y almacenamiento.
+     * 
+     * @private
+     * @returns {void}
      */
-    private save():void{
-        //guardar las tareas en el archivo JSON
+    private save(): void {
         writeToFile(this.name, this.items);
     }
 
     /**
-     * Agrega una nueva tarea al listado y actualiza el archivo.
-     * @param item - La nueva instancia de Tarea a agregar.
+     * Agrega una nueva tarea a la colección y la persiste.
+     * 
+     * Utiliza el spread operator para crear un nuevo array,
+     * siguiendo el principio de inmutabilidad.
+     * 
+     * @public
+     * @param {Tarea} item - Nueva tarea a agregar.
+     * @returns {void}
+     * 
+     * @example
+     * const tarea = new Tarea("Título", "Descripción", "Pendiente", "Baja");
+     * gestor.addItem(tarea);
      */
-    public addItem(item: Tarea):void{
-        this.items=[...this.items, item];
+    public addItem(item: Tarea): void {
+        this.items = [...this.items, item];
         this.save();
     }
 
     /**
-     * Busca una tarea por su ID y la reemplaza con la versión editada.
-     * @param id - El UUID de la tarea a modificar.
-     * @param editTarea - La instancia de Tarea con los datos ya modificados.
-     * @returns true si la operación fue exitosa, false si el ID no existe.
+     * Guarda el estado actual de todas las tareas.
+     * 
+     * Útil después de modificaciones directas a objetos Tarea
+     * obtenidos mediante getItems().
+     * 
+     * @public
+     * @returns {boolean} Siempre retorna true indicando éxito.
+     * 
+     * @example
+     * tarea.setEstado("Terminada");
+     * gestor.actItem(); // Persiste los cambios
      */
-   public actItem():boolean{
+    public actItem(): boolean {
         this.save();
         return true;
     }
 
     /**
-     * Realiza un "Borrado Lógico" (Soft Delete).
-     * No elimina el objeto del array, sino que cambia su propiedad 'eliminado' a true.
-     * @param tareaid - El UUID de la tarea a "eliminar".
-     * @returns true si se encontró y marcó como eliminada, false si no existe.
+     * Marca una tarea como eliminada (soft delete).
+     * 
+     * No elimina físicamente la tarea del array, sino que cambia
+     * su propiedad 'eliminado' a true. Esto permite recuperación
+     * y mantiene la integridad referencial.
+     * 
+     * @public
+     * @param {string} tareaid - UUID de la tarea a eliminar.
+     * @returns {boolean} true si se encontró y marcó, false si no existe.
+     * 
+     * @example
+     * const eliminada = gestor.deleteItem("uuid-de-la-tarea");
+     * if (!eliminada) {
+     *   console.log("Tarea no encontrada");
+     * }
      */
-    public deleteItem(tareaid: string): boolean{
+    public deleteItem(tareaid: string): boolean {
         const index = this.getIndexById(tareaid);
-        if(index === -1){
-            return false; // Tarea no encontrada
+        if (index === -1) {
+            return false;
         }
-        // Cambia el estado interno de la tarea
         this.items[index].setElimado();
         this.save();
         return true;
     }
 
     /**
-     * Método auxiliar para buscar la posición de una tarea en el arreglo.
-     * @param tareaid - El UUID a buscar.
-     * @returns El índice numérico (0...N) o -1 si no se encuentra.
+     * Busca el índice de una tarea por su identificador único.
+     * 
+     * Función pura de utilidad para operaciones internas.
+     * 
+     * @public
+     * @param {string} tareaid - UUID de la tarea a buscar.
+     * @returns {number} Índice en el array (0...N) o -1 si no existe.
+     * 
+     * @example
+     * const index = gestor.getIndexById("uuid");
+     * if (index !== -1) {
+     *   // Tarea encontrada
+     * }
      */
-    public getIndexById(tareaid: string): number { // funcion pura 
+    public getIndexById(tareaid: string): number {
         return this.items.findIndex(tarea => tarea.getId() === tareaid);
     }
 
     /**
-     * Retorna el arreglo completo de tareas cargadas en memoria.
+     * Obtiene la lista de tareas activas (no eliminadas).
+     * 
+     * Aplica automáticamente el filtro de soft delete,
+     * retornando solo las tareas visibles para el usuario.
+     * 
+     * @public
+     * @returns {Tarea[]} Array filtrado de tareas activas.
+     * 
+     * @example
+     * const activas = gestor.getItems();
+     * console.log(`Tienes ${activas.length} tareas activas`);
      */
     public getItems(): Tarea[] {
-    // 1. Usa filter() para crear un nuevo array.
-    // 2. Solo incluye los objetos donde 'item.eliminado' NO sea 'true'.
-    //    (Es decir, donde sea 'false' o la propiedad no exista/sea null/undefined)
-    return this.items.filter(item => item.getEliminado() !== true);
-  }   
+        return this.items.filter(item => item.getEliminado() !== true);
+    }
 
 }

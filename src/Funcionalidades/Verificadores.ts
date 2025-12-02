@@ -3,66 +3,83 @@ import { Tarea } from "../models/Tarea";
 const prompt = PromptSync();
 
 /**
- * Valida si un número está dentro de un rango.
- * @param numero Número a validar.
- * @param min Mínimo.
- * @param max Máximo.
- * @returns true si es válido.
+ * Verifica si un número se encuentra dentro de un rango especificado.
+ * 
+ * Función pura que valida tanto el tipo de dato como los límites.
+ * 
+ * @function validarRango
+ * @param {number} numero - Número a validar.
+ * @param {number} min - Límite inferior del rango (inclusivo).
+ * @param {number} max - Límite superior del rango (inclusivo).
+ * @returns {boolean} true si el número está en el rango, false en caso contrario.
+ * 
+ * @example
+ * validarRango(5, 1, 10);  // true
+ * validarRango(0, 1, 10);  // false
+ * validarRango(NaN, 1, 10); // false
  */
 export function validarRango(numero: number, min: number, max: number): boolean {
     return !Number.isNaN(numero) && numero >= min && numero <= max;
 }
 
 /**
- * Valida si la respuesta es 'y' o 'n'.
- * @param input Entrada del usuario.
- * @returns true si es válida.
+ * Valida si una entrada corresponde a una respuesta de confirmación.
+ * 
+ * Función pura que verifica respuestas booleanas en formato y/n.
+ * 
+ * @function esRespuestaConfirmacion
+ * @param {string} input - Entrada del usuario a validar.
+ * @returns {boolean} true si es 'y' o 'n', false en caso contrario.
+ * 
+ * @example
+ * esRespuestaConfirmacion("y"); // true
+ * esRespuestaConfirmacion("n"); // true
+ * esRespuestaConfirmacion("s"); // false
  */
 export function esRespuestaConfirmacion(input: string): boolean {
     return input === "y" || input === "n";
 }
 
 /**
- * Solicita al usuario un número entero dentro de un rango específico.
- * Permite configurar un valor por defecto si el usuario presiona Enter sin escribir nada.
- * * @param mensaje - El texto que se mostrará al usuario antes de pedir el dato.
- * @param min - El valor mínimo aceptado (y el valor por defecto si activadorVacio es true).
- * @param max - El valor máximo aceptado.
- * @param activadorVacio - Si es true, permite dejar el campo vacío (seleccionando 'min' automáticamente).
- * @returns El número validado ingresado por el usuario.
+ * Solicita y valida un número entero dentro de un rango específico.
+ * 
+ * Función impura que interactúa con la consola para capturar entrada.
+ * Soporta un modo opcional de valor por defecto cuando el usuario presiona Enter.
+ * 
+ * @function pedirNumero
+ * @param {string} mensaje - Texto a mostrar como prompt al usuario.
+ * @param {number} min - Valor mínimo aceptado (también es el valor por defecto si activadorVacio=true).
+ * @param {number} max - Valor máximo aceptado.
+ * @param {boolean} activadorVacio - Si es true, permite entrada vacía retornando min.
+ * @returns {number} Número validado ingresado por el usuario.
+ * 
+ * @example
+ * const opcion = pedirNumero("Seleccione opción", 1, 5, false);
+ * const estado = pedirNumero("Estado (Enter=Pendiente)", 1, 4, true);
  */
 export function pedirNumero(mensaje: string, min: number, max: number, activadorVacio: boolean): number {
-
     console.log(mensaje);
-    
-    // Muestra instrucciones diferentes dependiendo de si es obligatorio o opcional
+
     if (activadorVacio) {
         console.log(` (Opciones ${min}-${max}. Enter para seleccionar: ${min})`);
     } else {
         console.log(` (Ingrese un valor entre ${min} y ${max})\n`);
     }
 
-    // Captura la entrada inicial limpiando espacios
     let entrada: string = prompt(" > ")?.trim() || "";
 
-    // Si se permite vacío y el usuario da Enter, retorna el valor mínimo por defecto
     if (entrada === "" && activadorVacio) {
         return min;
     }
-    
-    // Intenta convertir la entrada a número
+
     let numero = parseInt(entrada);
 
-    // Bucle de validación: Se ejecuta mientras NO sea un número, o sea menor al min, o mayor al max
     while (!validarRango(numero, min, max)) {
-
-        // Vuelve a comprobar si es vacío dentro del bucle (por si el usuario falla y luego decide dar Enter)
         if (entrada === "" && activadorVacio) {
             return min;
-        }  
+        }
         console.log(" [!] Entrada inválida.");
-        
-        // Solicita el dato nuevamente
+
         entrada = prompt(" Intente nuevamente: > ")?.trim() || "";
         numero = parseInt(entrada);
     }
@@ -71,64 +88,105 @@ export function pedirNumero(mensaje: string, min: number, max: number, activador
 }
 
 /**
- * Solicita una confirmación de tipo Sí/No al usuario.
- * Fuerza al usuario a ingresar 'Y' o 'N' (insensible a mayúsculas).
- * * @param mensaje - La pregunta que se le hará al usuario.
- * @returns Retorna 1 si la respuesta es 'Sí' (Y), o 0 si la respuesta es 'No' (N).
+ * Solicita una confirmación binaria (Sí/No) al usuario.
+ * 
+ * Función impura que captura y valida respuestas Y/N de forma case-insensitive.
+ * Continúa solicitando hasta obtener una respuesta válida.
+ * 
+ * @function Confirmacion
+ * @param {string} mensaje - Pregunta a mostrar al usuario.
+ * @returns {number} 1 si la respuesta es 'Sí' (Y), 0 si es 'No' (N).
+ * 
+ * @example
+ * const confirmado = Confirmacion("¿Desea guardar los cambios?");
+ * if (confirmado === 1) {
+ *   guardarCambios();
+ * }
  */
 export function Confirmacion(mensaje: string): number {
+    let salida: number;
 
-    let salida : number;
-    
-    // 1. Mostrar la pregunta clara y separada con las opciones visuales
     console.log(`\n ${mensaje}`);
     console.log("   [Y] Sí   [N] No\n");
 
-    // 2. Captura inicial (convertimos a minúscula de una vez para facilitar la validación)
     let input: string = prompt(" > ")?.trim().toLowerCase() || "";
 
-    // 3. Bucle de validación "Blindado": Solo permite salir si es 'y' o 'n'
     while (!esRespuestaConfirmacion(input)) {
         console.log(" [!] Opción inválida. Por favor escriba 'Y' o 'N'.");
         input = prompt(" > ")?.trim().toLowerCase() || "";
     }
 
-    // Asignación de valor numérico según la respuesta
-    if(input =="y"){
+    if (input == "y") {
         salida = 1;
     }
-    else{
+    else {
         salida = 0;
     }
-    
-    // Retorna el valor numérico (1 o 0)
+
     return salida
 }
 
 /**
- * Valida si un título es válido para una tarea.
- * Verifica que no esté vacío, no exceda 100 caracteres y no exista ya en la lista de tareas.
- * @param titulo - El título a validar.
- * @param tareas - La lista de tareas existentes.
- * @returns true si el título es válido, false en caso contrario.
+ * Valida la integridad de un título para una nueva tarea.
+ * 
+ * Función pura que verifica tres criterios:
+ * 1. No está vacío ni contiene solo espacios
+ * 2. No excede los 100 caracteres
+ * 3. No existe ya en la lista de tareas 
+ * 
+ * @function esTituloValido
+ * @param {string} titulo - Título propuesto a validar.
+ * @param {Tarea[]} tareas - Lista de tareas existentes para verificar duplicados.
+ * @returns {boolean} true si el título es válido, false en caso contrario.
+ * 
+ * @example
+ * if (esTituloValido("Nueva tarea", tareas)) {
+ *   crearTarea(titulo);
+ * }
  */
 export function esTituloValido(titulo: string, tareas: Tarea[]): boolean {
     if (!titulo || titulo.trim().length === 0 || titulo.length > 100) {
         return false;
     }
-    // Verifica duplicados (insensible a mayúsculas/minúsculas)
     return !tareas.some(t => t.getTitulo().toLowerCase() === titulo.toLowerCase());
 }
 
 /**
- * Valida si una descripción es válida.
- * Verifica que no exceda los 500 caracteres.
- * @param descripcion - La descripción a validar.
- * @returns true si la descripción es válida, false en caso contrario.
+ * Valida la longitud de una descripción de tarea.
+ * 
+ * Función pura que verifica que la descripción no exceda el límite de caracteres.
+ * Las descripciones vacías son válidas (campo opcional).
+ * 
+ * @function esDescripcionValida
+ * @param {string} descripcion - Descripción a validar.
+ * @returns {boolean} true si tiene 500 caracteres o menos, false si excede.
+ * 
+ * @example
+ * if (!esDescripcionValida(texto)) {
+ *   console.log("La descripción es muy larga");
+ * }
  */
 export function esDescripcionValida(descripcion: string): boolean {
     return descripcion.length <= 500;
 }
-export function esfechaValida(fecha: Date,hoy:Date): boolean {
+
+/**
+ * Valida que una fecha de vencimiento sea posterior a la fecha actual.
+ * 
+ * Función pura que compara dos fechas para asegurar que el vencimiento
+ * no esté en el pasado.
+ * 
+ * @function esfechaValida
+ * @param {Date} fecha - Fecha de vencimiento propuesta.
+ * @param {Date} hoy - Fecha actual de referencia.
+ * @returns {boolean} true si la fecha es futura, false si es pasada o actual.
+ * 
+ * @example
+ * const vencimiento = new Date("2025-12-31");
+ * if (esfechaValida(vencimiento, new Date())) {
+ *   asignarFecha(vencimiento);
+ * }
+ */
+export function esfechaValida(fecha: Date, hoy: Date): boolean {
     return fecha > hoy;
 }

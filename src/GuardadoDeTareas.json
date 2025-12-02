@@ -81,51 +81,5 @@
     "dificultad": "Baja: ⭐",
     "fechaCreacion": "2025-12-01T21:54:51.259Z",
     "eliminado": false
-  },
-  {
-    "id": "50d5ac01-edd9-4088-80bc-33810f597dde",
-    "titulo": "aaaa",
-    "descripcion": "",
-    "estado": "Pendiente",
-    "dificultad": "Baja: ⭐",
-    "fechaCreacion": "2025-12-02T00:44:10.017Z",
-    "eliminado": false
-  },
-  {
-    "id": "075b3def-063f-4c57-be09-989537372c08",
-    "titulo": "aaaa bbbb",
-    "descripcion": "",
-    "estado": "Pendiente",
-    "dificultad": "Baja: ⭐",
-    "fechaCreacion": "2025-12-02T00:44:34.146Z",
-    "eliminado": false
-  },
-  {
-    "id": "76c8ea66-9996-4e9f-8c2e-feff6b57ad56",
-    "titulo": "bbbb cccc",
-    "descripcion": "",
-    "estado": "Pendiente",
-    "dificultad": "Baja: ⭐",
-    "fechaCreacion": "2025-12-02T00:45:03.692Z",
-    "eliminado": false
-  },
-  {
-    "id": "603858d4-575b-445c-982b-bd980fd22116",
-    "titulo": "cccc aaaa",
-    "descripcion": "",
-    "estado": "Pendiente",
-    "dificultad": "Baja: ⭐",
-    "fechaCreacion": "2025-12-02T00:45:17.049Z",
-    "eliminado": false
-  },
-  {
-    "id": "3af2a1b8-5bd8-4319-a73a-43912f2fd9e1",
-    "titulo": "asdsads",
-    "descripcion": "zzzz",
-    "estado": "En curso",
-    "dificultad": "Baja: ⭐",
-    "fechaCreacion": "2025-12-02T02:05:23.120Z",
-    "fechaVencimiento": "2026-11-01T03:00:00.000Z",
-    "eliminado": false
   }
 ]
