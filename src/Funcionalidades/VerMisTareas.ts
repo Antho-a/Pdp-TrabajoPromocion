@@ -1,7 +1,7 @@
 import PromptSync from "prompt-sync";
 import { DIFICULTADES_TAREA, Tarea ,ESTADOS_TAREA} from "../models/Tarea";  
-import { OrdenTareasASC, VerMisTareas,EditarY_N, PreguntaEditar } from "../Interfaz/Consola";
-import { pedirNumero , Confirmacion} from "./Verificadores";
+import { OrdenTareasASC, VerMisTareas,EditarY_N, PreguntaEditar, obtenerListaEstados,obtenerListaDificultades } from "../Interfaz/Consola";
+import { pedirNumero , Confirmacion,esfechaValida,esTituloValido,esDescripcionValida} from "./Verificadores";
 import { gestor } from "../logica/Gestor";
 import { filtroBusqueda, filtrarTodas } from "../funcionalidades-Puras/FiltroSegunEstado"
 import { OrdenadorTareas } from "../funcionalidades-Puras/ObjetoOrdenamiento";
@@ -154,7 +154,7 @@ function verMisTareas( tareas : gestor ):void{
         
         // Muestra menú de campos editables (Título, Descripción, Estado, Dificultad, Vencimiento, Salir)
         opcionVerTareas = pedirNumero(PreguntaEditar() , 1 , 6, false);
-        
+        let fechaVencimien:Date;
         switch(opcionVerTareas){
 
             case 1: // EDITAR TÍTULO
@@ -162,7 +162,7 @@ function verMisTareas( tareas : gestor ):void{
                 dato = prompt("Ingrese el título de la tarea (max 100 caracteres): ")?.trim() ||"";
                 
                 // Validación: Longitud y unicidad (no puede llamarse igual a otra tarea activa)
-                while(dato.length == 0 || dato.length > 100 || todasLasTareas.some(tarea => (tarea.getTitulo().toLowerCase() === dato.toLowerCase() ) && (tarea.getEstado() != "true") )){
+                while(!esTituloValido(dato, tareas.getItems())){
                     console.log("\n [!] Título inválido. Intente nuevamente.")
                     dato = prompt("Ingrese el título de la tarea (max 100 caracteres): ")?.trim() ||"";
                 }
@@ -178,7 +178,7 @@ function verMisTareas( tareas : gestor ):void{
                 dato = prompt("Ingrese la descripción (Opcional, max 500 caracteres): ")?.trim() ||"";
                 
                 // Validación de longitud
-                while(dato.length > 500){
+                while(!esDescripcionValida(dato)){
                     console.log("\n [!] Descripción inválida. Intente nuevamente.")
                     dato = prompt("Ingrese la descripción (max 500 caracteres): ")?.trim() ||"";
                 }
@@ -192,7 +192,7 @@ function verMisTareas( tareas : gestor ):void{
             case 3: // EDITAR ESTADO
                 console.clear();
                 // Muestra lista de estados disponibles
-                for(let i:number = 0 ; i<ESTADOS_TAREA.length ; i++ ){ console.log( (i+1)+" ) " + ESTADOS_TAREA[i])}
+                console.log(obtenerListaEstados)
                 
                 datonumerico = pedirNumero("Seleccione el nuevo estado actual - Apretar ENTER la dejara en pendiente -" , 1 , ESTADOS_TAREA.length , true);
                 
@@ -206,7 +206,7 @@ function verMisTareas( tareas : gestor ):void{
             case 4: // EDITAR DIFICULTAD
                 console.clear();
                 // Muestra lista de dificultades
-                for(let i:number = 0 ; i<DIFICULTADES_TAREA.length ; i++ ){ console.log( (i+1)+" ) " + DIFICULTADES_TAREA[i])}
+                console.log(obtenerListaDificultades);
                 
                 datonumerico=pedirNumero("Seleccione la nueva dificultad. - Apretar ENTER la dejara en Baja: ⭐ - " , 1 , DIFICULTADES_TAREA.length , true);
                 
@@ -218,18 +218,19 @@ function verMisTareas( tareas : gestor ):void{
 
             case 5: // EDITAR FECHA DE VENCIMIENTO
                 console.clear();
-                console.log("\n--- Ingrese la fecha ---");
-        
-                let año : number = pedirNumero("Porfavor indique el año de vencimiento\n" , 2025 , 2035 , false);
-                let mes : number = pedirNumero("Porfavor indique el mes de vencimiento \n" , 1 , 12 , false);
-                let dia : number = pedirNumero("Porfavor indique el dia de vencimiento \n" , 1 , 31 , false);
-                
-                // Nota: new Date(año, mes, dia) usa mes base 0 si no se corrige, verificar lógica interna de Date
-                datoFecha = new Date(año, mes-1, dia); 
-                
-                tareaSeleccionada.setFechaVencimiento(datoFecha);
-                tareaSeleccionada.setEdicion();
+                do{
+                    console.log("\n--- Ingrese la fecha ---");
+                    
+                    let año : number = pedirNumero("Porfavor indique el año de vencimiento\n" , 2025 , 2035 , false);
 
+                    let mes : number = pedirNumero("Porfavor indique el mes de vencimiento \n" , 1 , 12 , false);
+                    
+                    let dia : number = pedirNumero("Porfavor indique el dia de vencimiento \n" , 1 , 31 , false);
+
+
+                    fechaVencimien = new Date(año, mes-1, dia);
+                }while(!esfechaValida(fechaVencimien,new Date()));
+                tareaSeleccionada.setEdicion();
                 prompt("\n Presione Enter para continuar...");
             break;
 

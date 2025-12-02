@@ -129,3 +129,6 @@ export function esTituloValido(titulo: string, tareas: Tarea[]): boolean {
 export function esDescripcionValida(descripcion: string): boolean {
     return descripcion.length <= 500;
 }
+export function esfechaValida(fecha: Date,hoy:Date): boolean {
+    return fecha > hoy;
+}

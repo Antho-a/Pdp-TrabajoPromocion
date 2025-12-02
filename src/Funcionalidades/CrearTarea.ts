@@ -1,6 +1,6 @@
 import { Tarea, DIFICULTADES_TAREA, ESTADOS_TAREA } from "../models/Tarea"; 
 import PromptSync from "prompt-sync";
-import { pedirNumero, esTituloValido, esDescripcionValida } from "./Verificadores";
+import { pedirNumero, esTituloValido, esDescripcionValida,esfechaValida } from "./Verificadores";
 import { obtenerListaEstados, obtenerListaDificultades } from "../Interfaz/Consola";
 
 // Inicialización de la librería para capturar entrada por consola
@@ -76,6 +76,7 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
 
     // Si el usuario elige "Sí" (opción 1), solicita los componentes de la fecha
     if(opcionFecha === 1){
+        do{
         console.log("\n--- Ingrese la fecha ---");
         
         // Solicita año, mes y día con sus respectivos rangos de validación
@@ -89,6 +90,8 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
 
         // Crea el objeto Date con los datos recolectados
         fechaVencimiento = new Date(año, mes-1, dia);
+        }while(!esfechaValida(fechaVencimiento,new Date()));
+        
     }else{
         // Si elige "No", la fecha queda indefinida
         fechaVencimiento = undefined;

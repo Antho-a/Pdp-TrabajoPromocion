@@ -1,19 +1,6 @@
 import { Tarea } from "../models/Tarea";
 
-/**
- * Función recursiva que genera un string con la lista numerada de los títulos de las tareas.
- * Útil para mostrar un menú de selección dinámico.
- * * **Salida en consola:**
- * ```text
- * [1] Comprar leche
- * [2] Estudiar TypeScript
- * [3] Pasear al perro
- * ```
- * @param tareas - Arreglo de tareas a listar.
- * @param longitud - La cantidad total de tareas (usualmente tareas.length).
- * @param contador - Índice actual para la recursividad (iniciar en 0).
- * @returns Un string concatenado con todos los títulos numerados.
- */
+
 function mostrarTitulos(tareas: Tarea[]): string {
     return tareas.map((tarea, index) => {
         // Generamos la línea individual pura
