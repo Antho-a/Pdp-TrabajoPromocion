@@ -72,5 +72,50 @@
     "fechaCreacion": "2025-12-01T21:00:57.412Z",
     "fechaVencimiento": "2025-11-10T03:00:00.000Z",
     "eliminado": false
+  },
+  {
+    "id": "8a8c98ec-de26-418e-a3e8-c6e3bcfe35ab",
+    "titulo": "Disparar tanque en el parque",
+    "descripcion": "en estos dias",
+    "estado": "Pendiente",
+    "dificultad": "Baja: ⭐",
+    "fechaCreacion": "2025-12-01T21:54:51.259Z",
+    "eliminado": false
+  },
+  {
+    "id": "50d5ac01-edd9-4088-80bc-33810f597dde",
+    "titulo": "aaaa",
+    "descripcion": "",
+    "estado": "Pendiente",
+    "dificultad": "Baja: ⭐",
+    "fechaCreacion": "2025-12-02T00:44:10.017Z",
+    "eliminado": false
+  },
+  {
+    "id": "075b3def-063f-4c57-be09-989537372c08",
+    "titulo": "aaaa bbbb",
+    "descripcion": "",
+    "estado": "Pendiente",
+    "dificultad": "Baja: ⭐",
+    "fechaCreacion": "2025-12-02T00:44:34.146Z",
+    "eliminado": false
+  },
+  {
+    "id": "76c8ea66-9996-4e9f-8c2e-feff6b57ad56",
+    "titulo": "bbbb cccc",
+    "descripcion": "",
+    "estado": "Pendiente",
+    "dificultad": "Baja: ⭐",
+    "fechaCreacion": "2025-12-02T00:45:03.692Z",
+    "eliminado": false
+  },
+  {
+    "id": "603858d4-575b-445c-982b-bd980fd22116",
+    "titulo": "cccc aaaa",
+    "descripcion": "",
+    "estado": "Pendiente",
+    "dificultad": "Baja: ⭐",
+    "fechaCreacion": "2025-12-02T00:45:17.049Z",
+    "eliminado": false
   }
 ]

@@ -43,7 +43,7 @@ export class gestor {
      * @param item - La nueva instancia de Tarea a agregar.
      */
     public addItem(item: Tarea):void{
-        this.items.push(item);
+        this.items=[...this.items, item];
         this.save();
     }
 
