@@ -1,5 +1,5 @@
-import { OrdenTareasASC } from "../Interfaz/Consola";
-import { Tarea, ESTADOS_TAREA, DIFICULTADES_TAREA } from "../models/Tarea";
+
+import { Tarea} from "../models/Tarea";
 
 function contarPorEstado(tareas: Tarea[], estado: string): number {
     return Math.ceil((tareas.reduce((count, tarea) => {

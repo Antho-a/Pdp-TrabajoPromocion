@@ -4,7 +4,6 @@ import { gestor } from "./logica/Gestor";
 import { menu,menuConsultas,menuEstad } from "./Interfaz/Consola"; 
 import { vertarea } from "./Funcionalidades/VerMisTareas";
 import { CrearTarea } from "./Funcionalidades/CrearTarea";
-import { filtrarTodas } from "./funcionalidades-Puras/FiltroSegunEstado";
 import { pedirNumero } from "./Funcionalidades/Verificadores";
 import { BusquedaTitulo } from "./funcionalidades-Puras/FiltroSegunEstado";
 import { mostrarTitulos, mostrarTareaCompletas } from "./Interfaz/ConsolaTarea";

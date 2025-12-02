@@ -1,4 +1,4 @@
-import { Tarea, ESTADOS_TAREA, DIFICULTADES_TAREA } from "../models/Tarea";
+import { Tarea} from "../models/Tarea";
 const Logic = require('logicjs');
 
 const lvar = Logic.lvar,

@@ -1,4 +1,4 @@
-import { Tarea } from "../models/Tarea";
+
 
 /**
  * Muestra el menú principal de la aplicación.
@@ -183,8 +183,7 @@ export function obtenerListaEstados(estados:string[]): string {
 }
 export function obtenerListaDificultades(dificultad:string[]): string {
     return dificultad.map((dif, i) => `${i + 1}). ${dif}`).join('\n');
-}
-export { 
+}export { 
     menu, 
     VerMisTareas, 
     OrdenTareasASC, 

@@ -6,7 +6,7 @@ import { gestor } from "../logica/Gestor";
 import { filtroBusqueda, filtrarTodas } from "../funcionalidades-Puras/FiltroSegunEstado"
 import { OrdenadorTareas } from "../funcionalidades-Puras/ObjetoOrdenamiento";
 import { mostrarTitulos , mostrarTareaCompletas } from "../Interfaz/ConsolaTarea";
-import { validate } from "uuid";
+
 
 // Inicialización de la entrada por consola
 const prompt = PromptSync();
