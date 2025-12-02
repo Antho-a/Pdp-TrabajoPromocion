@@ -1,6 +1,7 @@
 import { Tarea, DIFICULTADES_TAREA, ESTADOS_TAREA } from "../models/Tarea"; 
 import PromptSync from "prompt-sync";
-import { pedirNumero } from "./Verificadores";
+import { pedirNumero, esTituloValido, esDescripcionValida } from "./Verificadores";
+import { obtenerListaEstados, obtenerListaDificultades } from "../Interfaz/Consola";
 
 // Inicialización de la librería para capturar entrada por consola
 const prompt = PromptSync();
@@ -19,10 +20,6 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
     
     // Función visual simple: Limpia la consola y muestra un encabezado estilizado
 
-
-    // Variables de flujo para control de bucles (aunque 'validacion' no se usa explícitamente abajo, se declara aquí)
-    let validacion: boolean = true;
-    let confirmar: string;
     
     // Declaración de variables que almacenarán las propiedades de la nueva tarea
     let titulo :string;
@@ -30,7 +27,8 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
     let estado: number ;
     let dificultad: number;
     let fechaVencimiento: Date | undefined;
-
+    let estados=ESTADOS_TAREA;
+    let dificultades= DIFICULTADES_TAREA;
     // --- 1. TÍTULO ---
     console.clear();
     header("Paso 1/4: Título");
@@ -38,11 +36,10 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
     titulo = prompt("Ingrese el título de la tarea (max 100 caracteres): ")?.trim() ||"";
     
     // Bucle de validación: Se repite si está vacío, excede 100 caracteres o si el título ya existe en el array 'tareas'
-    while(titulo.length == 0 || titulo.length > 100 || tareas.some(tarea => tarea.getTitulo().toLowerCase() === titulo.toLowerCase())){
+    while(!esTituloValido(titulo, tareas)){
         console.log("\n [!] Título inválido. Intente nuevamente.")
         titulo = prompt("Ingrese el título de la tarea (max 100 caracteres): ")?.trim() ||"";
     }
-    prompt("\n Presione Enter para continuar...");
     // --- 2. DESCRIPCIÓN ---
     console.clear();
     header("Paso 2/4: Descripción");
@@ -50,32 +47,27 @@ function CrearTarea(tareas : Tarea[]) : Tarea{
     descripcion = prompt("Ingrese la descripción (Opcional, max 500 caracteres): ")?.trim() ||"";
     
     // Validación de longitud máxima permitida para la descripción
-    while(descripcion.length > 500){
+    while(!esDescripcionValida(descripcion)){
         console.log("\n [!] Descripción inválida. Intente nuevamente.")
         descripcion = prompt("Ingrese la descripción (max 500 caracteres): ")?.trim() ||"";
     }
-    prompt("\n Presione Enter para continuar...");
     // --- 3. ESTADO ---
     console.clear();
     header("Paso 3/4: Estado"); 
      
     // Muestra en consola la lista de estados disponibles
-    for(let i:number = 0 ; i<ESTADOS_TAREA.length ; i++ ){ console.log((i+1)+"). "+ESTADOS_TAREA[i])}
-    console.log("")
+    console.log(obtenerListaEstados(estados));
 
     // Solicita un número al usuario validando que esté dentro del rango del array ESTADOS_TAREA
     estado = pedirNumero(" Seleccione el estado actual." , 1 , ESTADOS_TAREA.length , true);
-    prompt("\n Presione Enter para continuar...");
     // --- 4. DIFICULTAD ---
     console.clear();
     header("Paso 4/4: Dificultad"); 
     // Muestra en consola la lista de dificultades disponibles
-    for(let i:number = 0 ; i<DIFICULTADES_TAREA.length ; i++ ){console.log((i+1)+"). "+DIFICULTADES_TAREA[i])}
-    console.log("")
+    console.log(obtenerListaDificultades(dificultades));
     
     // Solicita seleccionar la dificultad validando el rango numérico
     dificultad=pedirNumero(" Seleccione La dificultad." , 1 , DIFICULTADES_TAREA.length , true);
-    prompt("\n Presione Enter para continuar...");
     // --- CONFIGURACIÓN DE FECHA ---
     console.clear();
     header("Configuración final");

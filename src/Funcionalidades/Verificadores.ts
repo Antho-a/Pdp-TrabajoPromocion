@@ -1,5 +1,26 @@
 import PromptSync from "prompt-sync";
+import { Tarea } from "../models/Tarea";
 const prompt = PromptSync();
+
+/**
+ * Valida si un número está dentro de un rango.
+ * @param numero Número a validar.
+ * @param min Mínimo.
+ * @param max Máximo.
+ * @returns true si es válido.
+ */
+export function validarRango(numero: number, min: number, max: number): boolean {
+    return !Number.isNaN(numero) && numero >= min && numero <= max;
+}
+
+/**
+ * Valida si la respuesta es 'y' o 'n'.
+ * @param input Entrada del usuario.
+ * @returns true si es válida.
+ */
+export function esRespuestaConfirmacion(input: string): boolean {
+    return input === "y" || input === "n";
+}
 
 /**
  * Solicita al usuario un número entero dentro de un rango específico.
@@ -33,7 +54,7 @@ export function pedirNumero(mensaje: string, min: number, max: number, activador
     let numero = parseInt(entrada);
 
     // Bucle de validación: Se ejecuta mientras NO sea un número, o sea menor al min, o mayor al max
-    while (Number.isNaN(numero) || numero < min || numero > max) {
+    while (!validarRango(numero, min, max)) {
 
         // Vuelve a comprobar si es vacío dentro del bucle (por si el usuario falla y luego decide dar Enter)
         if (entrada === "" && activadorVacio) {
@@ -67,7 +88,7 @@ export function Confirmacion(mensaje: string): number {
     let input: string = prompt(" > ")?.trim().toLowerCase() || "";
 
     // 3. Bucle de validación "Blindado": Solo permite salir si es 'y' o 'n'
-    while (input !== "y" && input !== "n") {
+    while (!esRespuestaConfirmacion(input)) {
         console.log(" [!] Opción inválida. Por favor escriba 'Y' o 'N'.");
         input = prompt(" > ")?.trim().toLowerCase() || "";
     }
@@ -82,4 +103,29 @@ export function Confirmacion(mensaje: string): number {
     
     // Retorna el valor numérico (1 o 0)
     return salida
+}
+
+/**
+ * Valida si un título es válido para una tarea.
+ * Verifica que no esté vacío, no exceda 100 caracteres y no exista ya en la lista de tareas.
+ * @param titulo - El título a validar.
+ * @param tareas - La lista de tareas existentes.
+ * @returns true si el título es válido, false en caso contrario.
+ */
+export function esTituloValido(titulo: string, tareas: Tarea[]): boolean {
+    if (!titulo || titulo.trim().length === 0 || titulo.length > 100) {
+        return false;
+    }
+    // Verifica duplicados (insensible a mayúsculas/minúsculas)
+    return !tareas.some(t => t.getTitulo().toLowerCase() === titulo.toLowerCase());
+}
+
+/**
+ * Valida si una descripción es válida.
+ * Verifica que no exceda los 500 caracteres.
+ * @param descripcion - La descripción a validar.
+ * @returns true si la descripción es válida, false en caso contrario.
+ */
+export function esDescripcionValida(descripcion: string): boolean {
+    return descripcion.length <= 500;
 }

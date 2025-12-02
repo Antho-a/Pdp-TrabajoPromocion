@@ -178,7 +178,12 @@ function EditarY_N (): string{
     return "- Desea editar la tarea? (Y/N)\n"
 }
 
-
+export function obtenerListaEstados(estados:string[]): string {
+    return estados.map((estado, i) => `${i + 1}). ${estado}`).join('\n');
+}
+export function obtenerListaDificultades(dificultad:string[]): string {
+    return dificultad.map((dif, i) => `${i + 1}). ${dif}`).join('\n');
+}
 export { 
     menu, 
     VerMisTareas, 

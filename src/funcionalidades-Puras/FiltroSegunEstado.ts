@@ -25,7 +25,7 @@ function filtroBusqueda(tareas : Tarea[], estado:string) : Tarea[]{
 }
 
 function BusquedaTitulo(tareas : Tarea[], titulo:string) : Tarea | undefined{
-    return tareas.find(tarea =>tarea.getTitulo().toLowerCase().includes(titulo.toLowerCase()));
+    return tareas.find(tarea =>tarea.getTitulo().toLowerCase()==titulo.toLowerCase());
 }
 
 export{ filtroBusqueda , filtrarTodas, BusquedaTitulo}

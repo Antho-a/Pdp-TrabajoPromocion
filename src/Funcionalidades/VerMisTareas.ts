@@ -225,7 +225,7 @@ function verMisTareas( tareas : gestor ):void{
                 let dia : number = pedirNumero("Porfavor indique el dia de vencimiento \n" , 1 , 31 , false);
                 
                 // Nota: new Date(año, mes, dia) usa mes base 0 si no se corrige, verificar lógica interna de Date
-                datoFecha = new Date(año, mes, dia); 
+                datoFecha = new Date(año, mes-1, dia); 
                 
                 tareaSeleccionada.setFechaVencimiento(datoFecha);
                 tareaSeleccionada.setEdicion();
